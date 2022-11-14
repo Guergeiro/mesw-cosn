@@ -1,0 +1,56 @@
+name: Master Push
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  linter:
+    # Only one OS is required since fmt is cross platform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check `pnpm format` passes
+        run: pnpm format:check
+
+      - name: Check `pnpm lint` passes
+        run: pnpm lint:check
+
+#   deploy-worker:
+#     needs: [linter]
+#     runs-on: ubuntu-latest
+#     strategy:
+#       matrix:
+#         worker: ['worker1', 'worker2']
+#     steps:
+#       - uses: actions/checkout@v3
+
+#       - uses: actions/checkout@v3
+#       - uses: pnpm/action-setup@v2.2.4
+#         with:
+#           version: 7
+#       - uses: actions/setup-node@v3
+#         with:
+#           node-version: 16
+#           cache: 'pnpm'
+
+#       - name: Install dependencies
+#         run: pnpm install
+
+#       - name: Deploy
+#         working-directory: "workers/${{ matrix.worker }}"
+#         run: pnpm deploy
+#         env:
+#           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}

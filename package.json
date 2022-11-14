@@ -1,0 +1,27 @@
+{
+  "name": "mesw-cosn",
+  "version": "1.0.0",
+  "scripts": {
+    "format": "prettier --write \"{workers}/**/*.{ts}\"",
+    "format:check": "prettier --check \"{workers}/**/*.{ts}\"",
+    "lint": "eslint \"{workers}/**/*.{ts}\" --fix",
+    "lint:check": "eslint \"{workers}/**/*.{ts}\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Guergeiro/mesw-cosn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Guergeiro/mesw-cosn/issues"
+  },
+  "homepage": "https://github.com/Guergeiro/mesw-cosn#readme",
+  "devDependencies": {
+    "@cloudflare/workers-types": "^3.18.0",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "@typescript-eslint/parser": "^5.43.0",
+    "eslint": "^8.27.0",
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4",
+    "wrangler": "^2.2.2"
+  }
+}
