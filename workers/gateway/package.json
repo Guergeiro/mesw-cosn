@@ -1,0 +1,13 @@
+{
+  "name": "cosn-gateway",
+  "scripts": {
+    "wrangler": "wrangler",
+    "dev": "wrangler dev --host 0.0.0.0 --local",
+    "deploy": "wrangler publish"
+  },
+  "dependencies": {
+    "hono": "^2.4.1",
+    "jose": "^4.11.1",
+    "zod": "^3.19.1"
+  }
+}

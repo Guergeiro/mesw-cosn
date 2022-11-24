@@ -2,10 +2,10 @@
   "name": "mesw-cosn",
   "version": "1.0.0",
   "scripts": {
-    "format": "prettier --write \"{workers}/**/*.{ts}\"",
-    "format:check": "prettier --check \"{workers}/**/*.{ts}\"",
-    "lint": "eslint \"{workers}/**/*.{ts}\" --fix",
-    "lint:check": "eslint \"{workers}/**/*.{ts}\""
+    "format": "prettier --write \"workers/**/*.ts\"",
+    "format:check": "prettier --check \"workers/**/*.ts\"",
+    "lint": "eslint \"workers/**/*.ts\" --fix",
+    "lint:check": "eslint \"workers/**/*.ts\""
   },
   "repository": {
     "type": "git",

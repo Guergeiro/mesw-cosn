@@ -20,6 +20,16 @@ importers:
       typescript: 4.8.4
       wrangler: 2.2.2
 
+  workers/gateway:
+    specifiers:
+      hono: ^2.4.1
+      jose: ^4.11.1
+      zod: ^3.19.1
+    dependencies:
+      hono: 2.5.4
+      jose: 4.11.1
+      zod: 3.19.1
+
 packages:
 
   /@cloudflare/kv-asset-handler/0.2.0:
@@ -1113,6 +1123,11 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /hono/2.5.4:
+    resolution: {integrity: sha512-Hu7gkWu3x2benHmDfRt3kq8WN6T/LKAIWzGbmayk/l6V4Dk749teBHyeMvi4zIzqCM2bzwhxZjoU6AEp0SF+5A==}
+    engines: {node: '>=16.0.0'}
+    dev: false
+
   /html-rewriter-wasm/0.4.1:
     resolution: {integrity: sha512-lNovG8CMCCmcVB1Q7xggMSf7tqPCijZXaH4gL6iE8BFghdQCbaY5Met9i1x2Ex8m/cZHDUtXK9H6/znKamRP8Q==}
     dev: true
@@ -1192,6 +1207,10 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
+
+  /jose/4.11.1:
+    resolution: {integrity: sha512-YRv4Tk/Wlug8qicwqFNFVEZSdbROCHRAC6qu/i0dyNKr5JQdoa2pIGoS04lLO/jXQX7Z9omoNewYIVIxqZBd9Q==}
+    dev: false
 
   /js-sdsl/4.1.5:
     resolution: {integrity: sha512-08bOAKweV2NUC1wqTtf3qZlnpOX/R2DU9ikpjOHs0H+ibQv3zpncVQg6um4uYtRtrwIX8M4Nh3ytK4HGlYAq7Q==}
@@ -1779,3 +1798,7 @@ packages:
       mustache: 4.2.0
       stack-trace: 0.0.10
     dev: true
+
+  /zod/3.19.1:
+    resolution: {integrity: sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==}
+    dev: false

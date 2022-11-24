@@ -1,0 +1,18 @@
+FROM node:16
+
+RUN npm install --global pnpm
+
+WORKDIR /usr/src/app
+
+COPY pnpm-lock.yaml .
+
+RUN pnpm fetch
+
+ADD . .
+RUN pnpm install -r --offline
+
+ARG WORKER
+
+WORKDIR /usr/src/app/workers/$WORKER
+
+CMD pnpm dev
