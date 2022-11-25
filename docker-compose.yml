@@ -26,6 +26,6 @@ services:
         WORKER: gateway
     container_name: mesw-cosn-gateway
     volumes:
-      - ./workers/gateway:/usr/src/app/workers/gateway
+      - ./workers/gateway/src:/usr/src/app/workers/gateway/src
     ports:
       - "60000:8787"

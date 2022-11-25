@@ -1,18 +1,13 @@
 FROM node:16
-
 RUN npm install --global pnpm
-
 WORKDIR /usr/src/app
-
 COPY pnpm-lock.yaml .
-
+COPY pnpm-workspace.yaml .
 RUN pnpm fetch
-
-ADD . .
-RUN pnpm install -r --offline
-
+COPY package.json .
+COPY tsconfig.base.json .
 ARG WORKER
-
+COPY ./workers/$WORKER ./workers/$WORKER
+RUN pnpm install
 WORKDIR /usr/src/app/workers/$WORKER
-
 CMD pnpm dev
