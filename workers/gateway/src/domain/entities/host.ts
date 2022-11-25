@@ -1,5 +1,5 @@
 export type HostProps = {
-  _id: string;
+  id?: string;
   pathname: string;
   hostname: string;
 };
@@ -10,7 +10,10 @@ export class Host {
   readonly #hostname!: string;
 
   public constructor(props: HostProps) {
-    this.#id = props._id;
+    if (props.id == null) {
+      props.id = crypto.randomUUID();
+    }
+    this.#id = props.id;
     this.#pathname = props.pathname;
     this.#hostname = props.hostname;
   }

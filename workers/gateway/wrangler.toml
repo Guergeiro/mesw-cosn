@@ -4,12 +4,9 @@ compatibility_date = "2022-11-04"
 account_id = "6cac6bb74225f44bf6842d3c8cf604e9"
 
 [vars]
-DB_HOST = "https://data.mongodb-api.com/app/cloudflare-sqhbt/endpoint/data/v1/action"
-DB_SOURCE = "mongodb-atlas"
-DB_NAME = "cosn"
-DB_COLLECTION = "hosts"
-AUTH_SERVICE = "https://cosn-users.brenosalles.workers.dev"
 ENV = "development"
+DATABASE_ENDPOINT = "http://rest_gateway:3000"
+AUTH_ENDPOINT = "https://cosn-users.brenosalles.workers.dev"
 
 [env.production.vars]
 ENV = "production"

@@ -23,9 +23,11 @@ export class AuthorizeRequest
   }
 
   public async execute({ pathname, jwtToken }: AuthorizeRequestInput) {
-    const payload = await this.#jwtService.validateJwt(jwtToken);
-    console.log(payload);
-    const host = await this.#hostsRepository.findByPathname(pathname);
+    // const payload = await this.#jwtService.validateJwt(jwtToken);
+    // console.log(payload);
+    const [_, firstPath] = pathname.split("/", 2);
+    console.log(firstPath)
+    const host = await this.#hostsRepository.findByPathname(firstPath);
     if (host == null) {
       throw new NotFoundException();
     }

@@ -24,6 +24,8 @@ export class ProtectedController implements Controller {
 
     const newUrl = new URL(`${pathname}${search}${hash}`, host.hostname);
 
-    return fetch(new Request(newUrl.toString(), request));
+    const newRequest = new Request(newUrl.toString(), request);
+
+    return fetch(newRequest);
   }
 }

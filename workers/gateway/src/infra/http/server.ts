@@ -3,43 +3,26 @@ import { ProtectedController } from "@adapters/protected/protected-controller";
 import { JwtService } from "@application/services/jwt";
 import { LoggerService } from "@application/services/logger";
 import { AuthorizeRequest } from "@application/use-cases/shared/authorize-request";
-import { HostsMongo } from "@infra/db/mongo";
+import { HostsPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 
 type Env = {
-  API_KEY: string;
-  DB_HOST: string;
-  DB_SOURCE: string;
-  DB_NAME: string;
-  DB_COLLECTION: string;
-
-  AUTH_SERVICE: string;
   ENV: string;
+
+  AUTH_ENDPOINT: string;
+  DATABASE_ENDPOINT: string;
 };
 
 export const server = new Hono<{ Bindings: Env }>();
 server.use(cors());
-server.use("/degrees", async function (c) {
+server.all("*", async function (c) {
   const { env, req } = c;
   const controller = new ProtectedController(
-    new AuthorizeRequest(new HostsMongo(env), new JwtService(env.AUTH_SERVICE))
-  );
-  const response = await controller.handle(req);
-  return response;
-});
-server.use("/users", async function (c) {
-  const { env, req } = c;
-  const controller = new ProtectedController(
-    new AuthorizeRequest(new HostsMongo(env), new JwtService(env.AUTH_SERVICE))
-  );
-  const response = await controller.handle(req);
-  return response;
-});
-server.use("/courses", async function (c) {
-  const { env, req } = c;
-  const controller = new ProtectedController(
-    new AuthorizeRequest(new HostsMongo(env), new JwtService(env.AUTH_SERVICE))
+    new AuthorizeRequest(
+      new HostsPostgre(env.DATABASE_ENDPOINT),
+      new JwtService(env.AUTH_ENDPOINT)
+    )
   );
   const response = await controller.handle(req);
   return response;

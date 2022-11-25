@@ -6,8 +6,8 @@
     "deploy": "wrangler publish"
   },
   "dependencies": {
+    "@supabase/postgrest-js": "^1.1.0",
     "hono": "^2.4.1",
-    "jose": "^4.11.1",
-    "zod": "^3.19.1"
+    "jose": "^4.11.1"
   }
 }
