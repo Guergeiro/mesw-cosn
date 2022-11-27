@@ -28,6 +28,29 @@ jobs:
       - name: Check `pnpm lint` passes
         run: pnpm lint:check
 
+  deploy-db-rest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ['gateway']
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Rename dockerfile
+        run: >
+          mv
+          Dockerfile.db_rest
+          Dockerfile
+
+      - name: Install Railway
+        run: npm install --global @railway/cli
+
+      - name: Deploy
+        working-directory: db
+        run: railway up --service db_rest
+        env:
+          RAILWAY_TOKEN: ${{ secrets[format('RAILWAY_TOKEN_{0}', matrix.project)] }}
+
   deploy-worker:
     needs: [linter]
     runs-on: ubuntu-latest
@@ -37,7 +60,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2.2.4
         with:
           version: 7

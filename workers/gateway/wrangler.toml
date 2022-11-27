@@ -5,7 +5,7 @@ account_id = "6cac6bb74225f44bf6842d3c8cf604e9"
 
 [vars]
 ENV = "development"
-DATABASE_ENDPOINT = "http://rest_gateway:3000"
+DATABASE_ENDPOINT = "http://gateway_db_rest:3000"
 AUTH_ENDPOINT = "https://cosn-users.brenosalles.workers.dev"
 
 [env.production.vars]

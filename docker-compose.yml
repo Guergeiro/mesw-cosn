@@ -1,27 +1,31 @@
 version: '3'
 services:
-  db_gateway:
+  gateway_db:
     build:
-      context: ./scripts-db-dev
-      dockerfile: Dockerfile
+      context: ./db
+      dockerfile: Dockerfile.db_dev
       args:
         DB: gateway
-    container_name: mesw-cosn-db_gateway
+    container_name: mesw-cosn-gateway_db
     environment:
       POSTGRES_DB: app_db
       POSTGRES_USER: app_user
       POSTGRES_PASSWORD: password
-  rest_gateway:
-    image: postgrest/postgrest
-    container_name: mesw-cosn-rest_gateway
+  gateway_db_rest:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_rest
+      args:
+        PORT: 4000
+    container_name: mesw-cosn-gateway_db_rest
     environment:
-      PGRST_DB_URI: postgres://app_user:password@db_gateway:5432/app_db
+      PGRST_DB_URI: postgres://app_user:password@gateway_db:5432/app_db
       # PGRST_DB_ANON_ROLE: postgres
       PGRST_DB_ANON_ROLE: app_user
   gateway:
     build:
       context: .
-      dockerfile: Dockerfile.worker
+      dockerfile: workers/Dockerfile.dev
       args:
         WORKER: gateway
     container_name: mesw-cosn-gateway

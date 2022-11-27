@@ -8,4 +8,4 @@ create table hosts (
 );
 
 insert into hosts (pathname, hostname)
-values ('users', 'http://0.0.0.0'), ('degrees', 'http://0.0.0.0'), ('courses', 'http://0.0.0.0');
+values ('users', 'https://api.brenosalles.com'), ('degrees', 'https://brenosalles.com'), ('courses', 'http://0.0.0.0');
