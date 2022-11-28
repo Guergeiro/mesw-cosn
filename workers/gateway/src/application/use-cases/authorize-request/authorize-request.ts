@@ -1,8 +1,8 @@
 import { Host } from "@domain/entities/host";
-import { NotFoundException } from "@domain/exceptions/NotFoundException";
 import { HostsRepository } from "@domain/repositories/hosts";
-import { UseCase } from "@application/use-cases/use-case";
-import { JwtService } from "@application/services/jwt";
+import { JwtService } from "shared-services";
+import { NotFoundException } from "shared-exceptions";
+import { UseCase } from "shared-use-cases";
 
 type AuthorizeRequestInput = {
   jwtToken: string;

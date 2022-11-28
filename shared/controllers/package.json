@@ -1,0 +1,7 @@
+{
+  "name": "shared-controllers",
+  "dependencies": {
+    "shared-exceptions": "workspace:shared-exceptions*",
+    "shared-services": "workspace:shared-services*"
+  }
+}

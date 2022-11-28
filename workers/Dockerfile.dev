@@ -6,6 +6,7 @@ COPY pnpm-workspace.yaml .
 RUN pnpm fetch
 COPY package.json .
 COPY tsconfig.base.json .
+COPY ./shared ./shared
 ARG WORKER
 COPY ./workers/$WORKER ./workers/$WORKER
 RUN pnpm install

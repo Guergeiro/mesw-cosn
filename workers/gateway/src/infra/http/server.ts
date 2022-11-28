@@ -1,11 +1,10 @@
-import { ErrorHandler } from "@adapters/error-handler";
 import { ProtectedController } from "@adapters/protected/protected-controller";
-import { JwtService } from "@application/services/jwt";
-import { LoggerService } from "@application/services/logger";
-import { AuthorizeRequest } from "@application/use-cases/shared/authorize-request";
+import { AuthorizeRequest } from "@application/use-cases/authorize-request/authorize-request";
 import { HostsPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { ErrorHandler } from "shared-controllers";
+import { JwtService, LoggerService } from "shared-services";
 
 type Env = {
   ENV: string;

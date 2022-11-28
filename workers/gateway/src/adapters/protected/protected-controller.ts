@@ -1,7 +1,9 @@
-import { Controller } from "@adapters/controller";
-import { AuthorizeRequest } from "@application/use-cases/shared/authorize-request";
-import { PreconditionFailedException } from "@domain/exceptions/PreconditionFailedException";
-import { UnauthorizedException } from "@domain/exceptions/UnauthorizedException";
+import { AuthorizeRequest } from "@application/use-cases/authorize-request/authorize-request";
+import { Controller } from "shared-controllers";
+import {
+  PreconditionFailedException,
+  UnauthorizedException,
+} from "shared-exceptions";
 
 export class ProtectedController implements Controller {
   readonly #useCase: AuthorizeRequest;

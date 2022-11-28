@@ -8,6 +8,9 @@
   "dependencies": {
     "@supabase/postgrest-js": "^1.1.0",
     "hono": "^2.4.1",
-    "jose": "^4.11.1"
+    "shared-exceptions": "workspace:shared-exceptions*",
+    "shared-services": "workspace:shared-services*",
+    "shared-controllers": "workspace:shared-controllers*",
+    "shared-use-cases": "workspace:shared-use-cases*"
   }
 }

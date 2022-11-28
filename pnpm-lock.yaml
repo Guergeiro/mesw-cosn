@@ -20,15 +20,43 @@ importers:
       typescript: 4.8.4
       wrangler: 2.2.2
 
+  shared/controllers:
+    specifiers:
+      shared-exceptions: workspace:shared-exceptions*
+      shared-services: workspace:shared-services*
+    dependencies:
+      shared-exceptions: link:../exceptions
+      shared-services: link:../services
+
+  shared/exceptions:
+    specifiers: {}
+
+  shared/services:
+    specifiers:
+      jose: ^4.11.1
+      shared-exceptions: workspace:shared-exceptions*
+    dependencies:
+      jose: 4.11.1
+      shared-exceptions: link:../exceptions
+
+  shared/use-cases:
+    specifiers: {}
+
   workers/gateway:
     specifiers:
       '@supabase/postgrest-js': ^1.1.0
       hono: ^2.4.1
-      jose: ^4.11.1
+      shared-controllers: workspace:shared-controllers*
+      shared-exceptions: workspace:shared-exceptions*
+      shared-services: workspace:shared-services*
+      shared-use-cases: workspace:shared-use-cases*
     dependencies:
       '@supabase/postgrest-js': 1.1.0
       hono: 2.5.4
-      jose: 4.11.1
+      shared-controllers: link:../../shared/controllers
+      shared-exceptions: link:../../shared/exceptions
+      shared-services: link:../../shared/services
+      shared-use-cases: link:../../shared/use-cases
 
 packages:
 

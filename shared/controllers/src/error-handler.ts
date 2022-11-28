@@ -1,8 +1,10 @@
-import { LoggerService } from "@application/services/logger";
-import { ForbiddenException } from "@domain/exceptions/ForbiddenException";
-import { NotFoundException } from "@domain/exceptions/NotFoundException";
-import { PreconditionFailedException } from "@domain/exceptions/PreconditionFailedException";
-import { UnauthorizedException } from "@domain/exceptions/UnauthorizedException";
+import {
+  ForbiddenException,
+  NotFoundException,
+  PreconditionFailedException,
+  UnauthorizedException,
+} from "shared-exceptions";
+import { LoggerService } from "shared-services";
 
 export class ErrorHandler {
   readonly #logger: LoggerService;

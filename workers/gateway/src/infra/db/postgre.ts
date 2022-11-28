@@ -1,7 +1,7 @@
 import { Host } from "@domain/entities/host";
-import { NotFoundException } from "@domain/exceptions/NotFoundException";
 import { HostsRepository } from "@domain/repositories/hosts";
 import { PostgrestClient } from "@supabase/postgrest-js";
+import { NotFoundException } from "shared-exceptions";
 
 export class HostsPostgre implements HostsRepository {
   readonly #client: PostgrestClient;
@@ -14,7 +14,7 @@ export class HostsPostgre implements HostsRepository {
   }
 
   public async findByPathname(pathname: string): Promise<Host> {
-    const {data, error} = await this.#client
+    const { data, error } = await this.#client
       .from("hosts")
       .select()
       .eq("pathname", pathname)

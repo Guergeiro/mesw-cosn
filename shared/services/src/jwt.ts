@@ -1,5 +1,5 @@
-import { UnauthorizedException } from "@domain/exceptions/UnauthorizedException";
 import { jwtDecrypt } from "jose";
+import { UnauthorizedException } from "shared-exceptions";
 
 export class JwtService {
   readonly #authServicePublicKeyEndpoint: string;

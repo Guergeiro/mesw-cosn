@@ -1,0 +1,7 @@
+{
+  "name": "shared-services",
+  "dependencies": {
+    "jose": "^4.11.1",
+    "shared-exceptions": "workspace:shared-exceptions*"
+  }
+}
