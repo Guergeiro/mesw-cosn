@@ -28,29 +28,51 @@ jobs:
       - name: Check `pnpm lint` passes
         run: pnpm lint:check
 
-#   deploy-worker:
-#     needs: [linter]
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         worker: ['worker1', 'worker2']
-#     steps:
-#       - uses: actions/checkout@v3
+  deploy-db-rest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: ['gateway']
+    steps:
+      - uses: actions/checkout@v3
 
-#       - uses: actions/checkout@v3
-#       - uses: pnpm/action-setup@v2.2.4
-#         with:
-#           version: 7
-#       - uses: actions/setup-node@v3
-#         with:
-#           node-version: 16
-#           cache: 'pnpm'
+      - name: Rename dockerfile
+        run: >
+          mv
+          Dockerfile.db_rest
+          Dockerfile
 
-#       - name: Install dependencies
-#         run: pnpm install
+      - name: Install Railway
+        run: npm install --global @railway/cli
 
-#       - name: Deploy
-#         working-directory: "workers/${{ matrix.worker }}"
-#         run: pnpm deploy
-#         env:
-#           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
+      - name: Deploy
+        working-directory: db
+        run: railway up --service db_rest
+        env:
+          RAILWAY_TOKEN: ${{ secrets[format('RAILWAY_TOKEN_{0}', matrix.project)] }}
+
+  deploy-worker:
+    needs: [linter]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        worker: ['gateway']
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Deploy
+        working-directory: "workers/${{ matrix.worker }}"
+        run: pnpm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
