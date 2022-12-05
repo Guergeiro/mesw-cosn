@@ -33,3 +33,37 @@ services:
       - ./workers/gateway/src:/usr/src/app/workers/gateway/src
     ports:
       - "60000:8787"
+
+  users_db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_dev
+      args:
+        DB: users
+    container_name: mesw-cosn-users_db
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: password
+  users_db_rest:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_rest
+      args:
+        PORT: 4000
+    container_name: mesw-cosn-users_db_rest
+    environment:
+      PGRST_DB_URI: postgres://app_user:password@users_db:5432/app_db
+      # PGRST_DB_ANON_ROLE: postgres
+      PGRST_DB_ANON_ROLE: app_user
+  users:
+    build:
+      context: .
+      dockerfile: workers/Dockerfile.dev
+      args:
+        WORKER: users
+    container_name: mesw-cosn-users
+    volumes:
+      - ./workers/users/src:/usr/src/app/workers/users/src
+    ports:
+      - "60001:8787"

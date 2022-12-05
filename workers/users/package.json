@@ -1,0 +1,17 @@
+{
+  "name": "cosn-users",
+  "scripts": {
+    "wrangler": "wrangler",
+    "dev": "wrangler dev --host 0.0.0.0 --local",
+    "deploy": "wrangler publish"
+  },
+  "dependencies": {
+    "@supabase/postgrest-js": "^1.1.0",
+    "hono": "^2.4.1",
+    "shared-controllers": "workspace:shared-controllers*",
+    "shared-exceptions": "workspace:shared-exceptions*",
+    "shared-services": "workspace:shared-services*",
+    "shared-use-cases": "workspace:shared-use-cases*",
+    "zod": "^3.19.1"
+  }
+}
