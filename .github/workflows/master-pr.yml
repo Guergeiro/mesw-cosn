@@ -1,0 +1,29 @@
+name: Master PR
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  linter:
+    # Only one OS is required since fmt is cross platform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Check `pnpm format` passes
+        run: pnpm format:check
+
+      - name: Check `pnpm lint` passes
+        run: pnpm lint:check
