@@ -1,17 +1,14 @@
-import { User } from "@domain/entities/user";
+import { User, UserProps } from "@domain/entities/user";
 import { UsersRepository } from "@domain/repositories/users";
 import { BadRequestException } from "shared-exceptions";
 import { UseCase } from "shared-use-cases";
 
-type UserCreateUserInput = {
-  email: string;
-  password: string;
-};
+type CreateUserInput = UserProps;
 
-type UserCreateUserOutput = User;
+type CreateUserOutput = User;
 
-export class UserCreateUser
-  implements UseCase<UserCreateUserInput, UserCreateUserOutput>
+export class CreateUser
+  implements UseCase<CreateUserInput, CreateUserOutput>
 {
   readonly #usersRepository: UsersRepository;
 
@@ -19,14 +16,14 @@ export class UserCreateUser
     this.#usersRepository = usersRepository;
   }
 
-  public async execute({ email, password }: UserCreateUserInput) {
+  public async execute({ email, password, role }: CreateUserInput) {
     const previousUser = await this.#usersRepository.findByEmail(email);
 
     if (previousUser != null) {
       throw new BadRequestException();
     }
 
-    const newUser = new User({ email, password });
+    const newUser = new User({ email, password, role });
     await this.#usersRepository.save(newUser);
 
     return newUser;

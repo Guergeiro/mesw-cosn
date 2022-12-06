@@ -1,4 +1,5 @@
-import { UserCreateUser } from "@application/use-cases/users/create-user";
+import { CreateUser } from "@application/use-cases/users/create-user";
+import { Roles } from "@domain/entities/user";
 import { Controller } from "shared-controllers";
 import { BadRequestException } from "shared-exceptions";
 import { z } from "zod";
@@ -6,17 +7,19 @@ import { z } from "zod";
 const bodyValidator = z.object({
   email: z.string().email(),
   password: z.string(),
+  role: z.nativeEnum(Roles),
+  name: z.string().optional(),
 });
 
 export class CreateUserController implements Controller {
-  readonly #useCase: UserCreateUser;
+  readonly #useCase: CreateUser;
 
-  public constructor(useCase: UserCreateUser) {
+  public constructor(useCase: CreateUser) {
     this.#useCase = useCase;
   }
 
   public async handle(request: Request) {
-    const len = request.headers.get("content-length") || "0"
+    const len = request.headers.get("content-length") || "0";
     if (len === "0") {
       throw new BadRequestException();
     }
