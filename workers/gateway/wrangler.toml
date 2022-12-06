@@ -10,5 +10,5 @@ AUTH_ENDPOINT = "http://users:8787"
 
 [env.production.vars]
 ENV = "production"
-DATABASE_ENDPOINT = "foo"
+DATABASE_ENDPOINT = "https://dbrest-production.up.railway.app"
 AUTH_ENDPOINT = "https://cosn-users.brenosalles.workers.dev"
