@@ -13,6 +13,21 @@ export class UsersPostgre implements UsersRepository {
     this.#client = postgreClient;
   }
 
+  public async findById(id: User["id"]) {
+    const { data, error } = await this.#client
+      .from("users")
+      .select()
+      .eq("id", id)
+      .limit(1)
+      .single();
+
+    if (error != null) {
+      return;
+    }
+
+    return new User(data);
+  }
+
   public async find(filters?: UserFilters) {
     let query = this.#client.from("users").select("id");
 
@@ -29,7 +44,7 @@ export class UsersPostgre implements UsersRepository {
     return data;
   }
 
-  public async findByEmail(email: string) {
+  public async findByEmail(email: User["email"]) {
     const { data, error } = await this.#client
       .from("users")
       .select()

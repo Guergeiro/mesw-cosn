@@ -1,7 +1,9 @@
 import { AuthSignInController } from "@adapters/auth/sign-in-controller";
 import { CreateUserController } from "@adapters/users/create-user-controller";
+import { GetUserController } from "@adapters/users/get-user-controller";
 import { GetUsersController } from "@adapters/users/get-users-controller";
 import { CreateUser } from "@application/use-cases/users/create-user";
+import { GetUser } from "@application/use-cases/users/get-user";
 import { GetUsers } from "@application/use-cases/users/get-users";
 import { UsersPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
@@ -41,6 +43,15 @@ server.get("/users", async function (c) {
     new GetUsers(new UsersPostgre(env.DATABASE_ENDPOINT))
   );
   const response = await controller.handle(req);
+  return response;
+});
+
+server.get("/users/:id", async function (c) {
+  const { env, req } = c;
+  const controller = new GetUserController(
+    new GetUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+  );
+  const response = await controller.handle(req!);
   return response;
 });
 
