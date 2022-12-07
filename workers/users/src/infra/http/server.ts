@@ -2,7 +2,7 @@ import { AuthSignInController } from "@adapters/auth/sign-in-controller";
 import { CreateUserController } from "@adapters/users/create-user-controller";
 import { GetUsersController } from "@adapters/users/get-users-controller";
 import { CreateUser } from "@application/use-cases/users/create-user";
-import { GetUsers } from "@application/use-cases/users/get-user";
+import { GetUsers } from "@application/use-cases/users/get-users";
 import { UsersPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
