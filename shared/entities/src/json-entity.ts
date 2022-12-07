@@ -1,3 +1,3 @@
 export interface JsonEntity {
-  toJSON(): Record<string, unknown>
+  toJSON(): Record<string, unknown>;
 }

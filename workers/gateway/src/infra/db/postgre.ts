@@ -21,7 +21,7 @@ export class HostsPostgre implements HostsRepository {
       .single();
 
     if (error != null) {
-      return
+      return;
     }
 
     return new Host(data);

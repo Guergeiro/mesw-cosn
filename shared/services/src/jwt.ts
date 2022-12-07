@@ -9,7 +9,7 @@ export class JwtService {
   }
 
   public async generateJwt(payload: unknown, privateKey: Uint8Array) {
-    const jwt = await new EncryptJWT({  })
+    const jwt = await new EncryptJWT({})
       .setIssuedAt()
       .setExpirationTime("2h")
       .encrypt(privateKey);

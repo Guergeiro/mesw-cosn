@@ -7,9 +7,7 @@ type CreateUserInput = UserProps;
 
 type CreateUserOutput = User;
 
-export class CreateUser
-  implements UseCase<CreateUserInput, CreateUserOutput>
-{
+export class CreateUser implements UseCase<CreateUserInput, CreateUserOutput> {
   readonly #usersRepository: UsersRepository;
 
   public constructor(usersRepository: UsersRepository) {
