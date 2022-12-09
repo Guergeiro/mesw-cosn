@@ -28,6 +28,9 @@ importers:
       shared-exceptions: link:../exceptions
       shared-services: link:../services
 
+  shared/entities:
+    specifiers: {}
+
   shared/exceptions:
     specifiers: {}
 
@@ -75,6 +78,26 @@ importers:
       shared-exceptions: link:../../shared/exceptions
       shared-services: link:../../shared/services
       shared-use-cases: link:../../shared/use-cases
+
+  workers/users:
+    specifiers:
+      '@supabase/postgrest-js': ^1.1.0
+      hono: ^2.4.1
+      shared-controllers: workspace:shared-controllers*
+      shared-entities: workspace:shared-entities*
+      shared-exceptions: workspace:shared-exceptions*
+      shared-services: workspace:shared-services*
+      shared-use-cases: workspace:shared-use-cases*
+      zod: ^3.19.1
+    dependencies:
+      '@supabase/postgrest-js': 1.1.0
+      hono: 2.5.4
+      shared-controllers: link:../../shared/controllers
+      shared-entities: link:../../shared/entities
+      shared-exceptions: link:../../shared/exceptions
+      shared-services: link:../../shared/services
+      shared-use-cases: link:../../shared/use-cases
+      zod: 3.19.1
 
 packages:
 

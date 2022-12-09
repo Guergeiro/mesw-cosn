@@ -1,5 +1,7 @@
 import {
+  BadRequestException,
   ForbiddenException,
+  InternalServerErrorException,
   NotFoundException,
   PreconditionFailedException,
   UnauthorizedException,
@@ -17,6 +19,12 @@ export class ErrorHandler {
     this.#logger.error(error);
     const headers = new Headers();
     headers.set("Content-Type", "application/json");
+    if (error instanceof BadRequestException) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 400,
+        headers,
+      });
+    }
     if (error instanceof UnauthorizedException) {
       return new Response(JSON.stringify({ error: error.message }), {
         status: 401,
@@ -38,6 +46,12 @@ export class ErrorHandler {
     if (error instanceof PreconditionFailedException) {
       return new Response(JSON.stringify({ error: error.message }), {
         status: 412,
+        headers,
+      });
+    }
+    if (error instanceof InternalServerErrorException) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
         headers,
       });
     }

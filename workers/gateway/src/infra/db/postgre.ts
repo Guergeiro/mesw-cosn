@@ -1,7 +1,6 @@
 import { Host } from "@domain/entities/host";
 import { HostsRepository } from "@domain/repositories/hosts";
 import { PostgrestClient } from "@supabase/postgrest-js";
-import { NotFoundException } from "shared-exceptions";
 
 export class HostsPostgre implements HostsRepository {
   readonly #client: PostgrestClient;
@@ -13,7 +12,7 @@ export class HostsPostgre implements HostsRepository {
     this.#client = postgreClient;
   }
 
-  public async findByPathname(pathname: string): Promise<Host> {
+  public async findByPathname(pathname: string) {
     const { data, error } = await this.#client
       .from("hosts")
       .select()
@@ -22,7 +21,7 @@ export class HostsPostgre implements HostsRepository {
       .single();
 
     if (error != null) {
-      throw new NotFoundException();
+      return;
     }
 
     return new Host(data);

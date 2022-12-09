@@ -6,7 +6,9 @@ account_id = "6cac6bb74225f44bf6842d3c8cf604e9"
 [vars]
 ENV = "development"
 DATABASE_ENDPOINT = "http://gateway_db_rest:3000"
-AUTH_ENDPOINT = "https://cosn-users.brenosalles.workers.dev"
+AUTH_ENDPOINT = "http://users:8787"
 
 [env.production.vars]
 ENV = "production"
+DATABASE_ENDPOINT = "https://dbrest-production.up.railway.app"
+AUTH_ENDPOINT = "https://cosn-users.brenosalles.workers.dev"
