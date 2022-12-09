@@ -1,5 +1,11 @@
 import { DegreeStatusEnum, EqfLevelEnum } from "@domain/enums/degree.enum";
 
+export type DegreeFilters = {
+  -readonly [K in keyof Partial<
+    Pick<Degree, "facultyId" | "status" | "eqfLevel">
+  >]: string;
+};
+
 export type DegreeProps = {
   id?: string;
   facultyId: string;
@@ -14,7 +20,7 @@ export type DegreeProps = {
 };
 
 export class Degree {
-  readonly #id?: string;
+  readonly #id: string;
   readonly #facultyId: string;
   readonly #code: string;
   readonly #name: string;
@@ -38,8 +44,24 @@ export class Degree {
     this.#abbr = props?.abbr;
   }
 
+  public get id() {
+    return this.#id;
+  }
+
+  public get facultyId() {
+    return this.#facultyId;
+  }
+
+  public get eqfLevel() {
+    return this.#eqfLevel;
+  }
+
   public set description(description: string) {
     this.#description = description;
+  }
+
+  public get status() {
+    return this.#status;
   }
 
   public set status(status: DegreeStatusEnum) {

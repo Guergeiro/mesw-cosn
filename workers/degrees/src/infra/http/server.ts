@@ -1,4 +1,5 @@
-import { CreateDegree } from "@application/use-cases/create-degree/create-degree";
+import { CreateDegree } from "@application/use-cases/degrees/create-degree";
+import { GetDegrees } from "@application/use-cases/degrees/get-degrees";
 import { DegreesPostgres } from "@infra/db/postgres";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -8,7 +9,11 @@ import { LoggerService } from "shared-services";
 import {
   CreateController,
   createDegree,
-} from "@adapters/degree/create-controller";
+} from "../../adapters/degrees/create-degree-controller";
+import {
+  getDegrees,
+  GetDegreesController,
+} from "../../adapters/degrees/get-degrees-controller";
 
 type Env = {
   ENV: string;
@@ -36,7 +41,7 @@ server.get("/degrees/open-api", async function (c) {
       },
     ],
     paths: {
-      "/degrees": { ...createDegree },
+      "/degrees": { ...getDegrees, ...createDegree },
       "/degrees/{degreeId}": {},
     },
   });
@@ -51,6 +56,18 @@ server.post("/degrees", async function (c) {
 
   const controller = new CreateController(
     new CreateDegree(new DegreesPostgres(env.DATABASE_ENDPOINT))
+  );
+
+  const response = await controller.handle(req);
+
+  return response;
+});
+
+server.get("/degrees", async function (c) {
+  const { env, req } = c;
+
+  const controller = new GetDegreesController(
+    new GetDegrees(new DegreesPostgres(env.DATABASE_ENDPOINT))
   );
 
   const response = await controller.handle(req);
