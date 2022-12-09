@@ -15,8 +15,6 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile.db_rest
-      args:
-        PORT: 4000
     container_name: mesw-cosn-gateway_db_rest
     environment:
       PGRST_DB_URI: postgres://app_user:password@gateway_db:5432/app_db
@@ -48,8 +46,6 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile.db_rest
-      args:
-        PORT: 4000
     container_name: mesw-cosn-users_db_rest
     environment:
       PGRST_DB_URI: postgres://app_user:password@users_db:5432/app_db

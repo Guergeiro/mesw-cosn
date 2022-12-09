@@ -1,12 +1,43 @@
-import { GetUsers } from "@application/use-cases/users/get-user";
+import { generateSchema } from "@anatine/zod-openapi";
+import { GetUsers } from "@application/use-cases/users/get-users";
 import { Roles } from "@domain/entities/user";
+import { PathsObject } from "openapi3-ts";
 import { Controller } from "shared-controllers";
 import { BadRequestException } from "shared-exceptions";
 import { z } from "zod";
 
-const queryValidator = z.object({
-  role: z.nativeEnum(Roles),
-});
+const queryValidator = z
+  .object({
+    role: z.nativeEnum(Roles),
+  })
+  .optional();
+
+export const getUsers: PathsObject = {
+  get: {
+    tags: ["users"],
+    responses: {
+      "200": {
+        description: "Gets all users.",
+        content: {
+          "application/json": {},
+        },
+      },
+      "400": {
+        description: "Bad Request Exception.",
+        content: {
+          "application/json": {},
+        },
+      },
+    },
+    parameters: [
+      {
+        name: "role",
+        in: "query",
+        schema: generateSchema(queryValidator),
+      },
+    ],
+  },
+};
 
 export class GetUsersController implements Controller {
   readonly #useCase: GetUsers;

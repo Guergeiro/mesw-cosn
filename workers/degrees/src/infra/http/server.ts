@@ -2,9 +2,13 @@ import { CreateDegree } from "@application/use-cases/create-degree/create-degree
 import { DegreesPostgres } from "@infra/db/postgres";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { ErrorHandler } from "shared-controllers";
+import { OpenApiBuilder } from "openapi3-ts";
+import { ErrorHandler, OpenApiHandler } from "shared-controllers";
 import { LoggerService } from "shared-services";
-import { CreateController } from "../../adapters/degree/create-controller";
+import {
+  CreateController,
+  createDegree,
+} from "@adapters/degree/create-controller";
 
 type Env = {
   ENV: string;
@@ -14,6 +18,33 @@ type Env = {
 
 export const server = new Hono<{ Bindings: Env }>();
 server.use(cors());
+
+server.get("/degrees/open-api", async function (c) {
+  const { req } = c;
+  const builder = OpenApiBuilder.create({
+    openapi: "3.0.0",
+    info: {
+      title: "Degrees OpenAPI 3.0",
+      description:
+        "This is the public API for the Degrees microservice based on the OpenAPI 3.0 specification.",
+      version: "1.0.0",
+    },
+    tags: [
+      {
+        name: "degrees",
+        description: "Everything about degrees",
+      },
+    ],
+    paths: {
+      "/degrees": { ...createDegree },
+      "/degrees/{degreeId}": {},
+    },
+  });
+
+  const controller = new OpenApiHandler(builder);
+
+  return await controller.handle(req);
+});
 
 server.post("/degrees", async function (c) {
   const { env, req } = c;

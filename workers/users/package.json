@@ -9,10 +9,9 @@
     "@supabase/postgrest-js": "^1.1.0",
     "hono": "^2.4.1",
     "shared-controllers": "workspace:shared-controllers*",
+    "shared-entities": "workspace:shared-entities*",
     "shared-exceptions": "workspace:shared-exceptions*",
     "shared-services": "workspace:shared-services*",
-    "shared-use-cases": "workspace:shared-use-cases*",
-    "shared-entities": "workspace:shared-entities*",
-    "zod": "^3.19.1"
+    "shared-use-cases": "workspace:shared-use-cases*"
   }
 }

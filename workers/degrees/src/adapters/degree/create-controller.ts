@@ -1,5 +1,7 @@
+import { generateSchema } from "@anatine/zod-openapi";
 import { CreateDegree } from "@application/use-cases/create-degree/create-degree";
 import { DegreeStatusEnum, EqfLevelEnum } from "@domain/enums/degree.enum";
+import { PathItemObject } from "openapi3-ts";
 import { Controller } from "shared-controllers";
 import { BadRequestException } from "shared-exceptions";
 import { z } from "zod";
@@ -15,6 +17,34 @@ const bodyValidator = z.object({
   url: z.string().url().optional(),
   abbr: z.string().optional(),
 });
+
+export const createDegree: PathItemObject = {
+  post: {
+    tags: ["degrees"],
+    responses: {
+      "201": {
+        description: "Get created degree.",
+        content: {
+          "application/json": {},
+        },
+      },
+      "400": {
+        description: "Bad Request Exception.",
+        content: {
+          "application/json": {},
+        },
+      },
+    },
+    requestBody: {
+      description: "Create a new degree",
+      content: {
+        "application/json": {
+          schema: generateSchema(bodyValidator),
+        },
+      },
+    },
+  },
+};
 
 export class CreateController implements Controller {
   readonly #useCase: CreateDegree;
