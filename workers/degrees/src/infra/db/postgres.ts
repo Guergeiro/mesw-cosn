@@ -37,5 +37,4 @@ export class DegreesPostgres implements DegreeRepository {
 
     return data;
   }
-
 }
