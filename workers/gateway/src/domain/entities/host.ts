@@ -10,10 +10,7 @@ export class Host {
   readonly #hostname!: string;
 
   public constructor(props: HostProps) {
-    if (props.id == null) {
-      props.id = crypto.randomUUID();
-    }
-    this.#id = props.id;
+    this.#id = props.id || crypto.randomUUID();
     this.#pathname = props.pathname;
     this.#hostname = props.hostname;
   }
