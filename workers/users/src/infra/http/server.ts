@@ -88,7 +88,7 @@ server.get("/users/:id", async function (c) {
   const controller = new GetUserController(
     new GetUser(new UsersPostgre(env.DATABASE_ENDPOINT))
   );
-  const response = await controller.handle(req!);
+  const response = await controller.handle(req);
   return response;
 });
 
