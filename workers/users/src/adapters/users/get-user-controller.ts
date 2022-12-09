@@ -1,5 +1,42 @@
 import { GetUser } from "@application/use-cases/users/get-user";
+import { PathsObject } from "openapi3-ts";
 import { Controller } from "shared-controllers";
+
+export const getUser: PathsObject = {
+  get: {
+    tags: ["users"],
+    responses: {
+      "200": {
+        description: "Get a user.",
+        content: {
+          "application/json": {},
+        },
+      },
+      "400": {
+        description: "Bad Request Exception.",
+        content: {
+          "application/json": {},
+        },
+      },
+      "404": {
+        description: "Not Found Exception.",
+        content: {
+          "application/json": {},
+        },
+      },
+    },
+    parameters: [
+      {
+        name: "userId",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
+  },
+};
 
 export class GetUserController implements Controller {
   readonly #useCase: GetUser;
