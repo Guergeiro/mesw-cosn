@@ -1,9 +1,10 @@
 import { CreateDegree } from "@application/use-cases/create-degree/create-degree";
 import { DegreeStatusEnum, EqfLevelEnum } from "@domain/enums/degree.enum";
 import { Controller } from "shared-controllers";
+import { BadRequestException } from "shared-exceptions";
 import { z } from "zod";
 
-const CreateDegreeInputSchema = z.object({
+const bodyValidator = z.object({
   facultyId: z.string().uuid(),
   code: z.string(),
   name: z.string(),
@@ -15,8 +16,6 @@ const CreateDegreeInputSchema = z.object({
   abbr: z.string().optional(),
 });
 
-type CreateDegreeInputType = z.infer<typeof CreateDegreeInputSchema>;
-
 export class CreateController implements Controller {
   readonly #useCase: CreateDegree;
 
@@ -25,14 +24,21 @@ export class CreateController implements Controller {
   }
 
   public async handle(request: Request) {
-    const body = await request.json<CreateDegreeInputType>();
+    const len = request.headers.get("content-length") || "0";
+    if (len === "0") {
+      throw new BadRequestException();
+    }
 
-    const degreeInput = CreateDegreeInputSchema.parse(body);
+    const parsed = bodyValidator.safeParse(await request.json());
 
-    const degree = await this.#useCase.execute(degreeInput);
+    if (parsed.success === false) {
+      throw new BadRequestException(parsed.error.message);
+    }
 
-    const response = new Response(JSON.stringify(degree));
+    const degree = await this.#useCase.execute(parsed.data);
 
-    return response;
+    const headers = new Headers();
+    headers.set("Content-Type", "application/json");
+    return new Response(JSON.stringify(degree), { status: 201, headers });
   }
 }

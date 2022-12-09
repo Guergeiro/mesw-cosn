@@ -26,7 +26,7 @@ export class Degree {
   #abbr?: string;
 
   public constructor(props: DegreeProps) {
-    this.#id = props.id;
+    this.#id = props.id ?? crypto.randomUUID();
     this.#facultyId = props.facultyId;
     this.#code = props.code;
     this.#name = props.name;
@@ -58,8 +58,8 @@ export class Degree {
     this.#goals = goals;
   }
 
-  public get toPersistence() {
-    return {
+  public persist(fn: (values: Record<string, unknown>) => Promise<void>) {
+    return fn({
       facultyId: this.#facultyId,
       code: this.#code,
       name: this.#name,
@@ -69,12 +69,12 @@ export class Degree {
       goals: this.#goals,
       url: this.#url,
       abbr: this.#abbr,
-    };
+    });
   }
 
-  public get toJson() {
+  public toJSON() {
     return {
-      id: this.#id ?? "",
+      id: this.#id,
       facultyId: this.#facultyId,
       code: this.#code,
       name: this.#name,

@@ -15,7 +15,7 @@ type CreateDegreeInput = {
   abbr?: string;
 };
 
-type CreateDegreeOutput = CreateDegreeInput & { id: string };
+type CreateDegreeOutput = Degree;
 
 export class CreateDegree
   implements UseCase<CreateDegreeInput, CreateDegreeOutput>
@@ -27,12 +27,13 @@ export class CreateDegree
   }
 
   async execute(input: CreateDegreeInput): Promise<CreateDegreeOutput> {
-    const degree = new Degree({ ...input });
+    // TODO: Verify if facultyId exists
 
-    const newDegree = await this.#degreeRepository.add(degree);
+    const degree = new Degree({ ...input });
+    await this.#degreeRepository.add(degree);
 
     // TODO: Publish to Kafka
 
-    return newDegree.toJson;
+    return degree;
   }
 }

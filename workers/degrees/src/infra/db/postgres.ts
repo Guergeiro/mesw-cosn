@@ -13,16 +13,12 @@ export class DegreesPostgres implements DegreeRepository {
     this.#client = postgresClient;
   }
 
-  public async add(degree: Degree): Promise<Degree> {
-    const { data, error } = await this.#client
-      .from("degrees")
-      .insert({ ...degree.toPersistence })
-      .select();
-
-    if (error != null) {
-      throw new InternalServerErrorException();
-    }
-
-    return new Degree(data[0]);
+  public async add(degree: Degree): Promise<void> {
+    return degree.persist(async (values) => {
+      const { error } = await this.#client.from("degrees").insert(values);
+      if (error != null) {
+        throw new InternalServerErrorException(error.message);
+      }
+    });
   }
 }

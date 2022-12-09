@@ -1,5 +1,5 @@
 import { Degree } from "@domain/entities/degree";
 
 export interface DegreeRepository {
-  add(degree: Degree): Promise<Degree>;
+  add(degree: Degree): Promise<void>;
 }

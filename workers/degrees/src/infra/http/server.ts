@@ -15,7 +15,7 @@ type Env = {
 export const server = new Hono<{ Bindings: Env }>();
 server.use(cors());
 
-server.post("/", async function (c) {
+server.post("/degrees", async function (c) {
   const { env, req } = c;
 
   const controller = new CreateController(
