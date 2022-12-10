@@ -30,6 +30,10 @@ export class DegreesPostgres implements DegreeRepository {
       query = query.eq(key, value);
     }
 
+    if (filters?.status == null) {
+      query = query.eq("status", DegreeStatusEnum.IN_PROGRESS);
+    }
+
     const { data, error } = await query;
 
     if (error != null) {

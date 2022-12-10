@@ -1,6 +1,6 @@
 import { generateSchema } from "@anatine/zod-openapi";
 import { CreateDegree } from "@application/use-cases/degrees/create-degree";
-import { DegreeStatusEnum, EqfLevelEnum } from "@domain/enums/degree.enum";
+import { EqfLevelEnum } from "@domain/enums/degree.enum";
 import { PathItemObject } from "openapi3-ts";
 import { Controller } from "shared-controllers";
 import { BadRequestException } from "shared-exceptions";
@@ -11,7 +11,6 @@ const bodyValidator = z.object({
   code: z.string(),
   name: z.string(),
   eqfLevel: z.nativeEnum(EqfLevelEnum),
-  status: z.nativeEnum(DegreeStatusEnum),
   description: z.string().max(2000),
   goals: z.string().max(2000).optional(),
   url: z.string().url().optional(),
