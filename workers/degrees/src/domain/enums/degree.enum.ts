@@ -1,5 +1,4 @@
 export enum DegreeStatusEnum {
-  DRAFT = "DRAFT",
   IN_PROGRESS = "IN_PROGRESS",
   ARCHIVED = "ARCHIVED",
 }

@@ -1,4 +1,5 @@
 import { Degree, DegreeFilters } from "@domain/entities/degree";
+import { DegreeStatusEnum } from "@domain/enums/degree.enum";
 import { DegreeRepository } from "@domain/repositories/degree";
 import { PostgrestClient } from "@supabase/postgrest-js";
 import { InternalServerErrorException } from "shared-exceptions";
@@ -51,5 +52,16 @@ export class DegreesPostgres implements DegreeRepository {
     }
 
     return new Degree(data);
+  }
+
+  public async archive(id: Degree["id"]) {
+    const { error } = await this.#client
+      .from("degrees")
+      .update({ status: DegreeStatusEnum.ARCHIVED })
+      .eq("id", id);
+
+    if (error != null) {
+      throw new InternalServerErrorException(error.message);
+    }
   }
 }
