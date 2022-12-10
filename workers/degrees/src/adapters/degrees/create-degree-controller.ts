@@ -1,5 +1,5 @@
 import { generateSchema } from "@anatine/zod-openapi";
-import { CreateDegree } from "@application/use-cases/create-degree/create-degree";
+import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { DegreeStatusEnum, EqfLevelEnum } from "@domain/enums/degree.enum";
 import { PathItemObject } from "openapi3-ts";
 import { Controller } from "shared-controllers";
