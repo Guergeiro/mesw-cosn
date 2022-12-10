@@ -11,6 +11,7 @@
     "shared-controllers": "workspace:shared-controllers*",
     "shared-exceptions": "workspace:shared-exceptions*",
     "shared-services": "workspace:shared-services*",
-    "shared-use-cases": "workspace:shared-use-cases*"
+    "shared-use-cases": "workspace:shared-use-cases*",
+    "shared-entities": "workspace:shared-entities*"
   }
 }

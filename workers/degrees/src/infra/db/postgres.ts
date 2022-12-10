@@ -37,4 +37,19 @@ export class DegreesPostgres implements DegreeRepository {
 
     return data;
   }
+
+  public async findById(id: Degree["id"]) {
+    const { data, error } = await this.#client
+      .from("degrees")
+      .select()
+      .eq("id", id)
+      .limit(1)
+      .single();
+
+    if (error != null) {
+      return;
+    }
+
+    return new Degree(data);
+  }
 }
