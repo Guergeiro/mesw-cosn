@@ -3,10 +3,15 @@ import {
   createDegree,
 } from "@adapters/degrees/create-degree-controller";
 import {
+  getDegree,
+  GetDegreeController,
+} from "@adapters/degrees/get-degree-controller";
+import {
   getDegrees,
   GetDegreesController,
 } from "@adapters/degrees/get-degrees-controller";
 import { CreateDegree } from "@application/use-cases/degrees/create-degree";
+import { GetDegree } from "@application/use-cases/degrees/get-degree";
 import { GetDegrees } from "@application/use-cases/degrees/get-degrees";
 import { DegreesPostgres } from "@infra/db/postgres";
 import { Hono } from "hono";
@@ -42,7 +47,7 @@ server.get("/degrees/open-api", async function (c) {
     ],
     paths: {
       "/degrees": { ...getDegrees, ...createDegree },
-      "/degrees/{degreeId}": {},
+      "/degrees/{degreeId}": { ...getDegree },
     },
   });
 
@@ -68,6 +73,18 @@ server.get("/degrees", async function (c) {
 
   const controller = new GetDegreesController(
     new GetDegrees(new DegreesPostgres(env.DATABASE_ENDPOINT))
+  );
+
+  const response = await controller.handle(req);
+
+  return response;
+});
+
+server.get("/degrees/:id", async function (c) {
+  const { env, req } = c;
+
+  const controller = new GetDegreeController(
+    new GetDegree(new DegreesPostgres(env.DATABASE_ENDPOINT))
   );
 
   const response = await controller.handle(req);
