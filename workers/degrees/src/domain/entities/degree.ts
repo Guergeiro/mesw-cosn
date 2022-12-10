@@ -1,4 +1,5 @@
 import { DegreeStatusEnum, EqfLevelEnum } from "@domain/enums/degree.enum";
+import { JsonEntity, PersistentEntity } from "shared-entities";
 
 export type DegreeFilters = {
   -readonly [K in keyof Partial<
@@ -19,7 +20,7 @@ export type DegreeProps = {
   abbr?: string;
 };
 
-export class Degree {
+export class Degree implements JsonEntity, PersistentEntity {
   readonly #id: string;
   readonly #facultyId: string;
   readonly #code: string;
