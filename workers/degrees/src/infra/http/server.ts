@@ -1,3 +1,11 @@
+import {
+  CreateController,
+  createDegree,
+} from "@adapters/degrees/create-degree-controller";
+import {
+  getDegrees,
+  GetDegreesController,
+} from "@adapters/degrees/get-degrees-controller";
 import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { GetDegrees } from "@application/use-cases/degrees/get-degrees";
 import { DegreesPostgres } from "@infra/db/postgres";
@@ -6,14 +14,6 @@ import { cors } from "hono/cors";
 import { OpenApiBuilder } from "openapi3-ts";
 import { ErrorHandler, OpenApiHandler } from "shared-controllers";
 import { LoggerService } from "shared-services";
-import {
-  CreateController,
-  createDegree,
-} from "../../adapters/degrees/create-degree-controller";
-import {
-  getDegrees,
-  GetDegreesController,
-} from "../../adapters/degrees/get-degrees-controller";
 
 type Env = {
   ENV: string;

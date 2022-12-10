@@ -1,6 +1,6 @@
+import { DegreeFilters } from "@domain/entities/degree";
 import { DegreeRepository } from "@domain/repositories/degree";
 import { UseCase } from "shared-use-cases";
-import { DegreeFilters } from "../../../domain/entities/degree";
 
 type GetDegreesOutput = string[];
 
