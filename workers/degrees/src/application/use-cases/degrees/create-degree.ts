@@ -1,5 +1,5 @@
 import { Degree } from "@domain/entities/degree";
-import { DegreeStatusEnum, EqfLevelEnum } from "@domain/enums/degree.enum";
+import { EqfLevelEnum } from "@domain/enums/degree.enum";
 import { DegreeRepository } from "@domain/repositories/degree";
 import { UseCase } from "shared-use-cases";
 
@@ -8,7 +8,6 @@ type CreateDegreeInput = {
   code: string;
   name: string;
   eqfLevel: EqfLevelEnum;
-  status: DegreeStatusEnum;
   description: string;
   goals?: string;
   url?: string;
