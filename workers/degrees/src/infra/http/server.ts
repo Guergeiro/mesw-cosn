@@ -1,4 +1,7 @@
-import { ArchiveDegreeController } from "@adapters/degrees/archive-degree-controller";
+import {
+  archiveDegree,
+  ArchiveDegreeController,
+} from "@adapters/degrees/archive-degree-controller";
 import {
   CreateController,
   createDegree,
@@ -11,10 +14,15 @@ import {
   getDegrees,
   GetDegreesController,
 } from "@adapters/degrees/get-degrees-controller";
+import {
+  patchDegree,
+  PatchDegreeController,
+} from "@adapters/degrees/patch-degree-controller";
 import { ArchiveDegree } from "@application/use-cases/degrees/archive-degree";
 import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { GetDegree } from "@application/use-cases/degrees/get-degree";
 import { GetDegrees } from "@application/use-cases/degrees/get-degrees";
+import { PatchDegree } from "@application/use-cases/degrees/patch-degree";
 import { DegreesPostgres } from "@infra/db/postgres";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -49,7 +57,7 @@ server.get("/degrees/open-api", async function (c) {
     ],
     paths: {
       "/degrees": { ...getDegrees, ...createDegree },
-      "/degrees/{degreeId}": { ...getDegree },
+      "/degrees/{degreeId}": { ...getDegree, ...patchDegree, ...archiveDegree },
     },
   });
 
@@ -91,6 +99,17 @@ server.get("/degrees/:id", async function (c) {
 
   const response = await controller.handle(req);
 
+  return response;
+});
+
+server.patch("/degrees/:id", async function (c) {
+  const { env, req } = c;
+
+  const controller = new PatchDegreeController(
+    new PatchDegree(new DegreesPostgres(env.DATABASE_ENDPOINT))
+  );
+
+  const response = await controller.handle(req);
   return response;
 });
 
