@@ -18,6 +18,7 @@ export type UserProps = {
   password: string;
   role: Role;
   name?: string;
+  deleted?: boolean;
 };
 
 export class User implements JsonEntity, PersistentEntity {
@@ -26,6 +27,7 @@ export class User implements JsonEntity, PersistentEntity {
   readonly #password!: string;
   readonly #role!: Role;
   readonly #name!: string;
+  readonly #deleted!: boolean;
 
   public constructor(props: UserProps) {
     this.#id = props.id || crypto.randomUUID();
@@ -33,6 +35,7 @@ export class User implements JsonEntity, PersistentEntity {
     this.#password = props.password;
     this.#role = props.role;
     this.#name = props.name || "";
+    this.#deleted = props.deleted || false;
   }
 
   public get id() {
@@ -55,6 +58,10 @@ export class User implements JsonEntity, PersistentEntity {
     return this.#name;
   }
 
+  public get deleted() {
+    return this.#deleted;
+  }
+
   public persist(fn: (values: Record<string, unknown>) => Promise<void>) {
     return fn({
       id: this.id,
@@ -62,6 +69,7 @@ export class User implements JsonEntity, PersistentEntity {
       password: this.password,
       role: this.role,
       name: this.name,
+      deleted: this.deleted,
     });
   }
 

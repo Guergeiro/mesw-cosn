@@ -49,15 +49,7 @@ export class GetUsersController implements Controller {
   public async handle(request: Request) {
     const { searchParams } = new URL(request.url);
 
-    const filter = [...searchParams.entries()].reduce(function (
-      acc: Record<string, string>,
-      [key, value]
-    ) {
-      acc[key] = value;
-      return acc;
-    },
-    {});
-
+    const filter = this.getFilters(searchParams);
     const parsed = queryValidator.safeParse(filter);
 
     if (parsed.success === false) {
@@ -69,5 +61,20 @@ export class GetUsersController implements Controller {
     const headers = new Headers();
     headers.set("Content-Type", "application/json");
     return new Response(JSON.stringify(users), { status: 200, headers });
+  }
+
+  private getFilters(searchParams: URLSearchParams) {
+    if ([...searchParams.keys()].length === 0) {
+      return;
+    }
+    const filter = [...searchParams.entries()].reduce(function (
+      acc: Record<string, string>,
+      [key, value]
+    ) {
+      acc[key] = value;
+      return acc;
+    },
+    {});
+    return filter;
   }
 }

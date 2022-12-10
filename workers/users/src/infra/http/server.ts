@@ -4,6 +4,10 @@ import {
   CreateUserController,
 } from "@adapters/users/create-user-controller";
 import {
+  deleteUser,
+  DeleteUserController,
+} from "@adapters/users/delete-user-controller";
+import {
   getUser,
   GetUserController,
 } from "@adapters/users/get-user-controller";
@@ -12,6 +16,7 @@ import {
   GetUsersController,
 } from "@adapters/users/get-users-controller";
 import { CreateUser } from "@application/use-cases/users/create-user";
+import { DeleteUser } from "@application/use-cases/users/delete-user";
 import { GetUser } from "@application/use-cases/users/get-user";
 import { GetUsers } from "@application/use-cases/users/get-users";
 import { UsersPostgre } from "@infra/db/postgre";
@@ -55,7 +60,7 @@ server.get("/users/open-api", async function (c) {
     ],
     paths: {
       "/users": { ...getUsers, ...createUser },
-      "/users/{userId}": { ...getUser },
+      "/users/{userId}": { ...getUser, ...deleteUser },
     },
   });
 
@@ -87,6 +92,15 @@ server.get("/users/:id", async function (c) {
   const { env, req } = c;
   const controller = new GetUserController(
     new GetUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+  );
+  const response = await controller.handle(req);
+  return response;
+});
+
+server.delete("/users/:id", async function (c) {
+  const { env, req } = c;
+  const controller = new DeleteUserController(
+    new DeleteUser(new UsersPostgre(env.DATABASE_ENDPOINT))
   );
   const response = await controller.handle(req);
   return response;

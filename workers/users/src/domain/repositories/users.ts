@@ -5,4 +5,5 @@ export interface UsersRepository {
   findById(id: User["id"]): Promise<User | undefined>;
   findByEmail(email: User["email"]): Promise<User | undefined>;
   save(user: User): Promise<void>;
+  deleteById(id: User["id"]): Promise<void>;
 }
