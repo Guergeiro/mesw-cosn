@@ -6,6 +6,7 @@ create table users (
     password text not null,
     role text not null,
     name text not null,
+    deleted boolean not null default false,
     primary key (id)
 );
 

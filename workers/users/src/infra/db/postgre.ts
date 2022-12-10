@@ -1,7 +1,10 @@
 import { User, UserFilters } from "@domain/entities/user";
 import { UsersRepository } from "@domain/repositories/users";
 import { PostgrestClient } from "@supabase/postgrest-js";
-import { InternalServerErrorException } from "shared-exceptions";
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from "shared-exceptions";
 
 export class UsersPostgre implements UsersRepository {
   readonly #client: PostgrestClient;
@@ -29,7 +32,7 @@ export class UsersPostgre implements UsersRepository {
   }
 
   public async find(filters?: UserFilters) {
-    let query = this.#client.from("users").select("id");
+    let query = this.#client.from("users").select("id").eq("deleted", false);
 
     for (const [key, value] of Object.entries(filters || {})) {
       query = query.eq(key, value);
@@ -66,5 +69,22 @@ export class UsersPostgre implements UsersRepository {
         throw new InternalServerErrorException(error.message);
       }
     });
+  }
+
+  public async deleteById(id: User["id"]) {
+    const { error, data } = await this.#client
+      .from("users")
+      .update({ deleted: true })
+      .eq("deleted", false)
+      .eq("id", id)
+      .select();
+
+    if (error != null) {
+      throw new InternalServerErrorException(error.message);
+    }
+
+    if (data.length === 0) {
+      throw new NotFoundException();
+    }
   }
 }
