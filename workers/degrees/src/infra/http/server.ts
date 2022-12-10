@@ -1,3 +1,4 @@
+import { ArchiveDegreeController } from "@adapters/degrees/archive-degree-controller";
 import {
   CreateController,
   createDegree,
@@ -10,6 +11,7 @@ import {
   getDegrees,
   GetDegreesController,
 } from "@adapters/degrees/get-degrees-controller";
+import { ArchiveDegree } from "@application/use-cases/degrees/archive-degree";
 import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { GetDegree } from "@application/use-cases/degrees/get-degree";
 import { GetDegrees } from "@application/use-cases/degrees/get-degrees";
@@ -89,6 +91,17 @@ server.get("/degrees/:id", async function (c) {
 
   const response = await controller.handle(req);
 
+  return response;
+});
+
+server.delete("/degrees/:id", async function (c) {
+  const { env, req } = c;
+
+  const controller = new ArchiveDegreeController(
+    new ArchiveDegree(new DegreesPostgres(env.DATABASE_ENDPOINT))
+  );
+
+  const response = await controller.handle(req);
   return response;
 });
 
