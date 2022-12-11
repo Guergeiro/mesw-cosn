@@ -15,10 +15,12 @@ import {
   getUsers,
   GetUsersController,
 } from "@adapters/users/get-users-controller";
+import { UpdateUserController } from "@adapters/users/update-user-controller";
 import { CreateUser } from "@application/use-cases/users/create-user";
 import { DeleteUser } from "@application/use-cases/users/delete-user";
 import { GetUser } from "@application/use-cases/users/get-user";
 import { GetUsers } from "@application/use-cases/users/get-users";
+import { UpdateUser } from "@application/use-cases/users/update-user";
 import { UsersPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -101,6 +103,15 @@ server.delete("/users/:id", async function (c) {
   const { env, req } = c;
   const controller = new DeleteUserController(
     new DeleteUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+  );
+  const response = await controller.handle(req);
+  return response;
+});
+
+server.patch("/users/:id", async function (c) {
+  const { env, req } = c;
+  const controller = new UpdateUserController(
+    new UpdateUser(new UsersPostgre(env.DATABASE_ENDPOINT))
   );
   const response = await controller.handle(req);
   return response;
