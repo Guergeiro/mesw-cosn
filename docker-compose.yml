@@ -95,3 +95,36 @@ services:
       - ./workers/degrees/src:/usr/src/app/workers/degrees/src
     ports:
       - "60002:8787"
+  courses_db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_dev
+      args:
+        DB: courses
+    container_name: mesw-cosn-courses_db
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: password
+  courses_db_rest:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_rest
+      args:
+        PORT: 4000
+    container_name: mesw-cosn-courses_db_rest
+    environment:
+      PGRST_DB_URI: postgres://app_user:password@courses_db:5432/app_db
+      # PGRST_DB_ANON_ROLE: postgres
+      PGRST_DB_ANON_ROLE: app_user
+  courses:
+    build:
+      context: .
+      dockerfile: workers/Dockerfile.dev
+      args:
+        WORKER: courses
+    container_name: mesw-cosn-courses
+    volumes:
+      - ./workers/courses/src:/usr/src/app/workers/courses/src
+    ports:
+      - "60003:8787"
