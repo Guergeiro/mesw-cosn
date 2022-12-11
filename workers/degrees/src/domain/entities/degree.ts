@@ -82,6 +82,7 @@ export class Degree implements JsonEntity, PersistentEntity {
 
   public persist(fn: (values: Record<string, unknown>) => Promise<void>) {
     return fn({
+      id: this.#id,
       facultyId: this.#facultyId,
       code: this.#code,
       name: this.#name,
