@@ -12,6 +12,7 @@ const bodyValidator = z.object({
   name: z.string(),
   eqfLevel: z.nativeEnum(EqfLevelEnum),
   description: z.string().max(2000),
+  tuition: z.number(),
   goals: z.string().max(2000).optional(),
   url: z.string().url().optional(),
   abbr: z.string().optional(),

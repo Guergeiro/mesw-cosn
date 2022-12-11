@@ -23,7 +23,8 @@ import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { GetDegree } from "@application/use-cases/degrees/get-degree";
 import { GetDegrees } from "@application/use-cases/degrees/get-degrees";
 import { PatchDegree } from "@application/use-cases/degrees/patch-degree";
-import { DegreesPostgres } from "@infra/db/postgres";
+import { DegreesPostgres } from "@infra/db/postgres/degrees-postgres";
+import { FacultiesPostgres } from "@infra/db/postgres/faculties-postgres";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { OpenApiBuilder } from "openapi3-ts";
@@ -70,7 +71,10 @@ server.post("/degrees", async function (c) {
   const { env, req } = c;
 
   const controller = new CreateController(
-    new CreateDegree(new DegreesPostgres(env.DATABASE_ENDPOINT))
+    new CreateDegree(
+      new DegreesPostgres(env.DATABASE_ENDPOINT),
+      new FacultiesPostgres(env.DATABASE_ENDPOINT)
+    )
   );
 
   const response = await controller.handle(req);
