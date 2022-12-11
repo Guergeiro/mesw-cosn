@@ -24,10 +24,10 @@ export type UserProps = {
 export class User implements JsonEntity, PersistentEntity {
   readonly #id!: string;
   readonly #email!: string;
-  readonly #password!: string;
   readonly #role!: Role;
-  readonly #name!: string;
   readonly #deleted!: boolean;
+  #password!: string;
+  #name!: string;
 
   public constructor(props: UserProps) {
     this.#id = props.id || crypto.randomUUID();
@@ -50,12 +50,20 @@ export class User implements JsonEntity, PersistentEntity {
     return this.#password;
   }
 
+  public set password(password: string) {
+    this.#password = password;
+  }
+
   public get role() {
     return this.#role;
   }
 
   public get name() {
     return this.#name;
+  }
+
+  public set name(name: string) {
+    this.#name = name;
   }
 
   public get deleted() {

@@ -64,7 +64,7 @@ export class UsersPostgre implements UsersRepository {
 
   public save(user: User) {
     return user.persist(async (values) => {
-      const { error } = await this.#client.from("users").insert(values);
+      const { error } = await this.#client.from("users").upsert(values);
       if (error != null) {
         throw new InternalServerErrorException(error.message);
       }
