@@ -32,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: ['gateway']
+        project: ['gateway', 'users', 'degrees']
     steps:
       - uses: actions/checkout@v3
 
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        worker: ['gateway']
+        worker: ['gateway', 'users', 'degrees']
     steps:
       - uses: actions/checkout@v3
 
