@@ -8,6 +8,7 @@ create table degrees (
     "eqfLevel" text not null,
     "status" text not null,
     "description" text not null,
+    "tuition" numeric(15,4) not null,
     "goals" text,
     "url" text,
     "abbr" text,

@@ -11,6 +11,7 @@ type CreateDegreeInput = {
   name: string;
   eqfLevel: EqfLevelEnum;
   description: string;
+  tuition: number;
   goals?: string;
   url?: string;
   abbr?: string;

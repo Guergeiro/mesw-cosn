@@ -14,6 +14,7 @@ export type DegreeProps = {
   name: string;
   eqfLevel: EqfLevelEnum;
   description: string;
+  tuition: number;
   goals?: string;
   url?: string;
   abbr?: string;
@@ -27,6 +28,7 @@ export class Degree implements JsonEntity, PersistentEntity {
   readonly #eqfLevel: EqfLevelEnum;
   #status: DegreeStatusEnum;
   #description: string;
+  #tuition: number;
   #goals?: string;
   #url?: string;
   #abbr?: string;
@@ -39,6 +41,7 @@ export class Degree implements JsonEntity, PersistentEntity {
     this.#eqfLevel = props.eqfLevel;
     this.#status = DegreeStatusEnum.IN_PROGRESS;
     this.#description = props.description;
+    this.#tuition = props.tuition;
     this.#goals = props?.goals;
     this.#url = props?.url;
     this.#abbr = props?.abbr;
@@ -89,6 +92,7 @@ export class Degree implements JsonEntity, PersistentEntity {
       eqfLevel: this.#eqfLevel,
       status: this.#status,
       description: this.#description,
+      tuition: this.#tuition,
       goals: this.#goals,
       url: this.#url,
       abbr: this.#abbr,
@@ -104,6 +108,7 @@ export class Degree implements JsonEntity, PersistentEntity {
       eqfLevel: this.#eqfLevel,
       status: this.#status,
       description: this.#description,
+      tuition: this.#tuition,
       goals: this.#goals,
       url: this.#url,
       abbr: this.#abbr,
