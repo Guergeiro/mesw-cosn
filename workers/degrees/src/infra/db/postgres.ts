@@ -1,8 +1,11 @@
-import { Degree, DegreeFilters } from "@domain/entities/degree";
+import { Degree, DegreeFilters, DegreeProps } from "@domain/entities/degree";
 import { DegreeStatusEnum } from "@domain/enums/degree.enum";
 import { DegreeRepository } from "@domain/repositories/degree";
 import { PostgrestClient } from "@supabase/postgrest-js";
-import { InternalServerErrorException } from "shared-exceptions";
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from "shared-exceptions";
 
 export class DegreesPostgres implements DegreeRepository {
   readonly #client: PostgrestClient;
@@ -67,5 +70,26 @@ export class DegreesPostgres implements DegreeRepository {
     if (error != null) {
       throw new InternalServerErrorException(error.message);
     }
+  }
+
+  public async patch(
+    id: Degree["id"],
+    props: Partial<Pick<DegreeProps, "description" | "goals" | "url" | "abbr">>
+  ) {
+    const { data, error } = await this.#client
+      .from("degrees")
+      .update({ ...props })
+      .eq("id", id)
+      .select();
+
+    if (error != null) {
+      throw new BadRequestException(error.message);
+    }
+
+    if (data.length === 0) {
+      throw new InternalServerErrorException();
+    }
+
+    return new Degree(data[0]);
   }
 }
