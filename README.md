@@ -11,9 +11,16 @@ issue, please do it
 
 ### Deployment
 
-Deployment of each serverless function is made to [Cloudflare Workers](https://workers.cloudflare.com/).
+Deployment of each serverless function is made to
+[Cloudflare Workers](https://workers.cloudflare.com/). Deployments available
+exist in the following URLs:
 
-Databases are corresponding REST APIs are deployed to
+- https://cosn-gateway.brenosalles.workers.dev/
+- https://cosn-users.brenosalles.workers.dev/
+- https://cosn-degrees.brenosalles.workers.dev/
+- https://cosn-courses.brenosalles.workers.dev/
+
+Databases and corresponding REST APIs are deployed to
 [Railway](https://railway.app/).
 
 ### OpenAPI
@@ -23,6 +30,13 @@ Each function contains an endpoint that spits the specification either as _JSON_
 or _YAML_, depending on the _Content-Type_ of the _Accept_ header of the
 request. By default, if no _Accept_ header is passed, _JSON_ will be used. To
 get _YAML_, use `text/yaml` _Content-Type_.
+
+For each of the services (except the gateway), here's the URLs that point to the
+specification:
+
+- https://cosn-users.brenosalles.workers.dev/users/open-api
+- https://cosn-degrees.brenosalles.workers.dev/degrees/open-api
+- https://cosn-courses.brenosalles.workers.dev/courses/open-api
 
 ## Requirements
 
