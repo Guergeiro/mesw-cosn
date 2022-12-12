@@ -1,4 +1,5 @@
 import { AuthSignInController } from "@adapters/auth/sign-in-controller";
+import { changeRole } from "@adapters/users/change-role-controller";
 import {
   createUser,
   CreateUserController,
@@ -63,6 +64,7 @@ server.get("/users/open-api", async function (c) {
     paths: {
       "/users": { ...getUsers, ...createUser },
       "/users/{userId}": { ...getUser, ...deleteUser },
+      "/users/{userId}/ops/change-role": { ...changeRole },
     },
   });
 
