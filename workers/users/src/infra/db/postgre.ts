@@ -1,4 +1,4 @@
-import { User, UserFilters } from "@domain/entities/user";
+import { Role, User, UserFilters } from "@domain/entities/user";
 import { UsersRepository } from "@domain/repositories/users";
 import { PostgrestClient } from "@supabase/postgrest-js";
 import {
@@ -108,6 +108,22 @@ export class UsersPostgre implements UsersRepository {
     const { error, data } = await this.#client
       .from("users")
       .update({ blocked: false })
+      .eq("id", id)
+      .select();
+
+    if (error != null) {
+      throw new InternalServerErrorException(error.message);
+    }
+
+    if (data.length === 0) {
+      throw new NotFoundException();
+    }
+  }
+
+  public async changeRole(id: User["id"], role: Role) {
+    const { error, data } = await this.#client
+      .from("users")
+      .update({ role: role })
       .eq("id", id)
       .select();
 

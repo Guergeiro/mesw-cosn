@@ -1,4 +1,4 @@
-import { User, UserFilters } from "@domain/entities/user";
+import { Role, User, UserFilters } from "@domain/entities/user";
 
 export interface UsersRepository {
   find(filters?: UserFilters): Promise<Array<Pick<User, "id">>>;
@@ -8,4 +8,5 @@ export interface UsersRepository {
   deleteById(id: User["id"]): Promise<void>;
   blockById(id: User["id"]): Promise<void>;
   unBlockById(id: User["id"]): Promise<void>;
+  changeRole(id: User["id"], role: Role): Promise<void>;
 }
