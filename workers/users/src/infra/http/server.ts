@@ -1,5 +1,9 @@
 import { AuthSignInController } from "@adapters/auth/sign-in-controller";
 import {
+  blockUser,
+  BlockUserController,
+} from "@adapters/users/block-user-controller";
+import {
   createUser,
   CreateUserController,
 } from "@adapters/users/create-user-controller";
@@ -15,11 +19,17 @@ import {
   getUsers,
   GetUsersController,
 } from "@adapters/users/get-users-controller";
+import {
+  unBlockUser,
+  UnblockUserController,
+} from "@adapters/users/unblock-user-controller";
 import { UpdateUserController } from "@adapters/users/update-user-controller";
+import { BlockUser } from "@application/use-cases/users/block-user";
 import { CreateUser } from "@application/use-cases/users/create-user";
 import { DeleteUser } from "@application/use-cases/users/delete-user";
 import { GetUser } from "@application/use-cases/users/get-user";
 import { GetUsers } from "@application/use-cases/users/get-users";
+import { UnblockUser } from "@application/use-cases/users/unblock-user";
 import { UpdateUser } from "@application/use-cases/users/update-user";
 import { UsersPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
@@ -63,6 +73,8 @@ server.get("/users/open-api", async function (c) {
     paths: {
       "/users": { ...getUsers, ...createUser },
       "/users/{userId}": { ...getUser, ...deleteUser },
+      "/users/{userId}/ops/block": { ...blockUser },
+      "/users/{userId}/ops/unblock": { ...unBlockUser },
     },
   });
 
@@ -71,20 +83,19 @@ server.get("/users/open-api", async function (c) {
   return await controller.handle(req);
 });
 
-server.post("/users", async function (c) {
+server.patch("/users/:id/ops/block", async function (c) {
   const { env, req } = c;
-  const controller = new CreateUserController(
-    new CreateUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+  const controller = new BlockUserController(
+    new BlockUser(new UsersPostgre(env.DATABASE_ENDPOINT))
   );
-
   const response = await controller.handle(req);
   return response;
 });
 
-server.get("/users", async function (c) {
+server.patch("/users/:id/ops/unblock", async function (c) {
   const { env, req } = c;
-  const controller = new GetUsersController(
-    new GetUsers(new UsersPostgre(env.DATABASE_ENDPOINT))
+  const controller = new UnblockUserController(
+    new UnblockUser(new UsersPostgre(env.DATABASE_ENDPOINT))
   );
   const response = await controller.handle(req);
   return response;
@@ -112,6 +123,25 @@ server.patch("/users/:id", async function (c) {
   const { env, req } = c;
   const controller = new UpdateUserController(
     new UpdateUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+  );
+  const response = await controller.handle(req);
+  return response;
+});
+
+server.post("/users", async function (c) {
+  const { env, req } = c;
+  const controller = new CreateUserController(
+    new CreateUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+  );
+
+  const response = await controller.handle(req);
+  return response;
+});
+
+server.get("/users", async function (c) {
+  const { env, req } = c;
+  const controller = new GetUsersController(
+    new GetUsers(new UsersPostgre(env.DATABASE_ENDPOINT))
   );
   const response = await controller.handle(req);
   return response;

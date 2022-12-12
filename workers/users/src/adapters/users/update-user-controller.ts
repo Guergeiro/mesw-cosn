@@ -35,6 +35,16 @@ export const updateUser: PathItemObject = {
         },
       },
     },
+    parameters: [
+      {
+        name: "userId",
+        in: "path",
+        required: true,
+        schema: {
+          type: "string",
+        },
+      },
+    ],
     requestBody: {
       description: "Update a user",
       content: {

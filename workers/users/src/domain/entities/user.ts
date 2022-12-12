@@ -18,6 +18,7 @@ export type UserProps = {
   password: string;
   role: Role;
   name?: string;
+  blocked?: boolean;
   deleted?: boolean;
 };
 
@@ -25,6 +26,7 @@ export class User implements JsonEntity, PersistentEntity {
   readonly #id!: string;
   readonly #email!: string;
   readonly #role!: Role;
+  readonly #blocked!: boolean;
   readonly #deleted!: boolean;
   #password!: string;
   #name!: string;
@@ -35,6 +37,7 @@ export class User implements JsonEntity, PersistentEntity {
     this.#password = props.password;
     this.#role = props.role;
     this.#name = props.name || "";
+    this.#blocked = props.blocked || false;
     this.#deleted = props.deleted || false;
   }
 
@@ -70,6 +73,10 @@ export class User implements JsonEntity, PersistentEntity {
     return this.#deleted;
   }
 
+  public get blocked() {
+    return this.#blocked;
+  }
+
   public persist(fn: (values: Record<string, unknown>) => Promise<void>) {
     return fn({
       id: this.id,
@@ -77,6 +84,7 @@ export class User implements JsonEntity, PersistentEntity {
       password: this.password,
       role: this.role,
       name: this.name,
+      blocked: this.blocked,
       deleted: this.deleted,
     });
   }
