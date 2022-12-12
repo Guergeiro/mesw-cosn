@@ -87,4 +87,36 @@ export class UsersPostgre implements UsersRepository {
       throw new NotFoundException();
     }
   }
+
+  public async blockById(id: User["id"]) {
+    const { error, data } = await this.#client
+      .from("users")
+      .update({ blocked: true })
+      .eq("id", id)
+      .select();
+
+    if (error != null) {
+      throw new InternalServerErrorException(error.message);
+    }
+
+    if (data.length === 0) {
+      throw new NotFoundException();
+    }
+  }
+
+  public async unBlockById(id: User["id"]) {
+    const { error, data } = await this.#client
+      .from("users")
+      .update({ blocked: false })
+      .eq("id", id)
+      .select();
+
+    if (error != null) {
+      throw new InternalServerErrorException(error.message);
+    }
+
+    if (data.length === 0) {
+      throw new NotFoundException();
+    }
+  }
 }
