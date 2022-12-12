@@ -6,5 +6,7 @@ export interface UsersRepository {
   findByEmail(email: User["email"]): Promise<User | undefined>;
   save(user: User): Promise<void>;
   deleteById(id: User["id"]): Promise<void>;
+  blockById(id: User["id"]): Promise<void>;
+  unBlockById(id: User["id"]): Promise<void>;
   changeRole(id: User["id"], role: Role): Promise<void>;
 }
