@@ -1,5 +1,8 @@
 import { AuthSignInController } from "@adapters/auth/sign-in-controller";
-import { changeRole } from "@adapters/users/change-role-controller";
+import {
+  changeRole,
+  ChangeRoleController,
+} from "@adapters/users/change-role-controller";
 import {
   blockUser,
   BlockUserController,
@@ -38,6 +41,7 @@ import { cors } from "hono/cors";
 import { OpenApiBuilder } from "openapi3-ts";
 import { ErrorHandler, OpenApiHandler } from "shared-controllers";
 import { LoggerService } from "shared-services";
+import { ChangeRole } from "@application/use-cases/users/change-role";
 
 type Env = {
   ENV: string;
@@ -83,6 +87,15 @@ server.get("/users/open-api", async function (c) {
   const controller = new OpenApiHandler(builder);
 
   return await controller.handle(req);
+});
+
+server.patch("/users/:id/ops/change-role", async function (c) {
+  const { env, req } = c;
+  const controller = new ChangeRoleController(
+    new ChangeRole(new UsersPostgre(env.DATABASE_ENDPOINT))
+  );
+  const response = await controller.handle(req);
+  return response;
 });
 
 server.patch("/users/:id/ops/block", async function (c) {
