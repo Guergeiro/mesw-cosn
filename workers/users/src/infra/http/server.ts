@@ -1,4 +1,7 @@
-import { AuthSignInController } from "@adapters/auth/sign-in-controller";
+import {
+  AuthSignInController,
+  signIn,
+} from "@adapters/auth/sign-in-controller";
 import {
   changeRole,
   ChangeRoleController,
@@ -40,24 +43,19 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { OpenApiBuilder } from "openapi3-ts";
 import { ErrorHandler, OpenApiHandler } from "shared-controllers";
-import { LoggerService } from "shared-services";
+import { JwtService, LoggerService } from "shared-services";
 import { ChangeRole } from "@application/use-cases/users/change-role";
+import { AuthSignIn } from "@application/use-cases/auth/sign-in";
 
 type Env = {
   ENV: string;
 
   DATABASE_ENDPOINT: string;
+  JWT_SECRET: string;
 };
 
 export const server = new Hono<{ Bindings: Env }>();
 server.use(cors());
-
-server.post("/auth/sign-in", async function (c) {
-  const { req } = c;
-  const controller = new AuthSignInController();
-  const response = await controller.handle(req);
-  return response;
-});
 
 server.get("/users/open-api", async function (c) {
   const { req } = c;
@@ -71,11 +69,16 @@ server.get("/users/open-api", async function (c) {
     },
     tags: [
       {
+        name: "auth",
+        description: "Everything about authentication",
+      },
+      {
         name: "users",
         description: "Everything about users",
       },
     ],
     paths: {
+      "/auth/sign-in": { ...signIn },
       "/users": { ...getUsers, ...createUser },
       "/users/{userId}": { ...getUser, ...deleteUser },
       "/users/{userId}/ops/block": { ...blockUser },
@@ -87,6 +90,18 @@ server.get("/users/open-api", async function (c) {
   const controller = new OpenApiHandler(builder);
 
   return await controller.handle(req);
+});
+
+server.post("/auth/sign-in", async function (c) {
+  const { env, req } = c;
+  const controller = new AuthSignInController(
+    new AuthSignIn(
+      new UsersPostgre(env.DATABASE_ENDPOINT),
+      new JwtService(env.JWT_SECRET)
+    )
+  );
+  const response = await controller.handle(req);
+  return response;
 });
 
 server.patch("/users/:id/ops/change-role", async function (c) {

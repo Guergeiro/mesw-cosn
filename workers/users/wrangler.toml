@@ -6,6 +6,7 @@ account_id = "6cac6bb74225f44bf6842d3c8cf604e9"
 [vars]
 ENV = "development"
 DATABASE_ENDPOINT = "http://users_db_rest:3000"
+JWT_SECRET = "qwerty123"
 
 [env.production.vars]
 ENV = "production"

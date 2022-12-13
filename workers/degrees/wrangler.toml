@@ -9,3 +9,4 @@ DATABASE_ENDPOINT = "http://degrees_db_rest:3000"
 
 [env.production.vars]
 ENV = "production"
+DATABASE_ENDPOINT = "https://dbrest-production-822a.up.railway.app"

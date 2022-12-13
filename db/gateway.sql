@@ -4,8 +4,13 @@ create table hosts (
     id uuid default gen_random_uuid(),
     pathname text not null,
     hostname text not null,
+    protected boolean not null,
     primary key (id)
 );
 
-insert into hosts (pathname, hostname)
-values ('users', 'http://users:8787'),('auth', 'http://users:8787'), ('degrees', 'https://brenosalles.com'), ('courses', 'http://0.0.0.0');
+insert into hosts (pathname, hostname, protected)
+values
+('users', 'http://users:8787', true),
+('auth', 'http://users:8787', false),
+('degrees', 'http://degrees:8787', true),
+('courses', 'http://courses:8787', true);
