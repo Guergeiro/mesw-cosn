@@ -15,7 +15,7 @@ export class ErrorHandler {
     this.#logger = logger;
   }
 
-  public handle(error: unknown) {
+  public handle(error: Error) {
     this.#logger.error(error);
     const headers = new Headers();
     headers.set("Content-Type", "application/json");
@@ -55,9 +55,12 @@ export class ErrorHandler {
         headers,
       });
     }
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
-      headers,
-    });
+    return new Response(
+      JSON.stringify({ error: error.message || "Internal Server Error" }),
+      {
+        status: 500,
+        headers,
+      }
+    );
   }
 }

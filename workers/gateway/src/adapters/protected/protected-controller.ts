@@ -17,12 +17,18 @@ export class ProtectedController implements Controller {
       throw new UnauthorizedException();
     }
     const [basic, jwtToken] = auth.split(" ", 2);
+
     if (basic.toLowerCase() !== "bearer") {
       throw new PreconditionFailedException();
     }
 
     const { pathname, hash, search } = new URL(request.url);
-    const host = await this.#useCase.execute({ pathname, jwtToken });
+
+    const host = await this.#useCase.execute({
+      pathname,
+      jwtToken,
+      method: request.method,
+    });
 
     const newUrl = new URL(`${pathname}${search}${hash}`, host.hostname);
 

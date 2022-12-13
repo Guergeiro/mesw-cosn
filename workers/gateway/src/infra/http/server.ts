@@ -9,8 +9,8 @@ import { JwtService, LoggerService } from "shared-services";
 type Env = {
   ENV: string;
 
-  AUTH_ENDPOINT: string;
   DATABASE_ENDPOINT: string;
+  JWT_SECRET: string;
 };
 
 export const server = new Hono<{ Bindings: Env }>();
@@ -20,7 +20,7 @@ server.all("*", async function (c) {
   const controller = new ProtectedController(
     new AuthorizeRequest(
       new HostsPostgre(env.DATABASE_ENDPOINT),
-      new JwtService(env.AUTH_ENDPOINT)
+      new JwtService(env.JWT_SECRET)
     )
   );
   const response = await controller.handle(req);

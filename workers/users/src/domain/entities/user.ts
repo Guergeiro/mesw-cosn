@@ -93,7 +93,6 @@ export class User implements JsonEntity, PersistentEntity {
     return {
       id: this.id,
       email: this.email,
-      password: this.password,
       role: this.role,
       name: this.name,
     };

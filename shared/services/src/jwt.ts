@@ -1,34 +1,31 @@
-import { jwtDecrypt, EncryptJWT } from "jose";
+import { jwtVerify, SignJWT } from "jose";
 import { UnauthorizedException } from "shared-exceptions";
 
 export class JwtService {
-  readonly #authServicePublicKeyEndpoint: string;
+  readonly #secret: Uint8Array;
 
-  public constructor(authServicePublicKeyEndpoint: string) {
-    this.#authServicePublicKeyEndpoint = authServicePublicKeyEndpoint;
+  public constructor(secret: string) {
+    this.#secret = new TextEncoder().encode(secret);
   }
 
-  public async generateJwt(payload: unknown, privateKey: Uint8Array) {
-    const jwt = await new EncryptJWT({})
+  public async sign(payload: Record<string, unknown>) {
+    const jwt = await new SignJWT(payload)
+      .setProtectedHeader({ alg: "HS256" })
       .setIssuedAt()
+      .setIssuer("urn:auth-mesw-cosn")
       .setExpirationTime("2h")
-      .encrypt(privateKey);
+      .sign(this.#secret);
     return jwt;
   }
 
-  public async validateJwt(jwtToken: string) {
-    const key = await this.getPublicKey();
-
-    const { payload } = await jwtDecrypt(jwtToken, key);
-    return payload;
-  }
-
-  private async getPublicKey() {
-    const res = await fetch(this.#authServicePublicKeyEndpoint);
-    if (res.ok !== true) {
+  public async verify(jwtToken: string) {
+    try {
+      const { payload } = await jwtVerify(jwtToken, this.#secret, {
+        issuer: "urn:auth-mesw-cosn",
+      });
+      return payload;
+    } catch (err) {
       throw new UnauthorizedException();
     }
-    const key = await res.arrayBuffer();
-    return new Uint8Array(key);
   }
 }
