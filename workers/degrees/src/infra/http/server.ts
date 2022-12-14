@@ -64,6 +64,15 @@ server.get("/degrees/open-api", async function (c) {
       "/degrees": { ...getDegrees, ...createDegree },
       "/degrees/{degreeId}": { ...getDegree, ...patchDegree, ...archiveDegree },
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        }
+      }
+    }
   });
 
   const controller = new OpenApiHandler(builder);

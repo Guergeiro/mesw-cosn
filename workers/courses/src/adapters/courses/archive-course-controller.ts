@@ -32,6 +32,11 @@ export const archiveCourse: PathItemObject = {
         },
       },
     ],
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
   },
 };
 

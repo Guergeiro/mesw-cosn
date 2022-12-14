@@ -85,6 +85,15 @@ server.get("/users/open-api", async function (c) {
       "/users/{userId}/ops/unblock": { ...unBlockUser },
       "/users/{userId}/ops/change-role": { ...changeRole },
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        }
+      }
+    }
   });
 
   const controller = new OpenApiHandler(builder);

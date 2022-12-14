@@ -40,6 +40,11 @@ export const createCourse: PathItemObject = {
         },
       },
     },
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
   },
 };
 

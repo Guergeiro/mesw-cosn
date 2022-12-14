@@ -54,6 +54,11 @@ export const patchCourse: PathItemObject = {
         },
       },
     },
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
   },
 };
 

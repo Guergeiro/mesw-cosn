@@ -60,6 +60,15 @@ server.get("/courses/open-api", async function (c) {
       "/courses": { ...getCourses, ...createCourse },
       "/courses/{courseId}": { ...getCourse, ...patchCourse, ...archiveCourse },
     },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        }
+      }
+    }
   });
 
   const controller = new OpenApiHandler(builder);

@@ -43,6 +43,11 @@ export const createDegree: PathItemObject = {
         },
       },
     },
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
   },
 };
 
