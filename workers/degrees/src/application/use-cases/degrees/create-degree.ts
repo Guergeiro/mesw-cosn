@@ -3,6 +3,7 @@ import { EqfLevelEnum } from "@domain/enums/degree.enum";
 import { DegreeRepository } from "@domain/repositories/degree";
 import { FacultyRepository } from "@domain/repositories/faculty";
 import { BadRequestException } from "shared-exceptions";
+import { KafkaPublisher } from "shared-services";
 import { UseCase } from "shared-use-cases";
 
 type CreateDegreeInput = {
@@ -24,13 +25,16 @@ export class CreateDegree
 {
   readonly #degreeRepository: DegreeRepository;
   readonly #facultyRepository: FacultyRepository;
+  readonly #kafkaPublisher: KafkaPublisher;
 
   public constructor(
     degreeRepository: DegreeRepository,
-    facultyRepository: FacultyRepository
+    facultyRepository: FacultyRepository,
+    kafkaPublisher: KafkaPublisher
   ) {
     this.#degreeRepository = degreeRepository;
     this.#facultyRepository = facultyRepository;
+    this.#kafkaPublisher = kafkaPublisher;
   }
 
   async execute(input: CreateDegreeInput): Promise<CreateDegreeOutput> {
@@ -42,7 +46,11 @@ export class CreateDegree
     const degree = new Degree({ ...input });
     await this.#degreeRepository.add(degree);
 
-    // TODO: Publish to Kafka
+    await this.#kafkaPublisher.send({
+      topic: "degree",
+      key: "created",
+      message: degree.id,
+    });
 
     return degree;
   }

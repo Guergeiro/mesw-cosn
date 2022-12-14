@@ -3,13 +3,13 @@ import {
   signIn,
 } from "@adapters/auth/sign-in-controller";
 import {
-  changeRole,
-  ChangeRoleController,
-} from "@adapters/users/change-role-controller";
-import {
   blockUser,
   BlockUserController,
 } from "@adapters/users/block-user-controller";
+import {
+  changeRole,
+  ChangeRoleController,
+} from "@adapters/users/change-role-controller";
 import {
   createUser,
   CreateUserController,
@@ -34,7 +34,9 @@ import {
   updateUser,
   UpdateUserController,
 } from "@adapters/users/update-user-controller";
+import { AuthSignIn } from "@application/use-cases/auth/sign-in";
 import { BlockUser } from "@application/use-cases/users/block-user";
+import { ChangeRole } from "@application/use-cases/users/change-role";
 import { CreateUser } from "@application/use-cases/users/create-user";
 import { DeleteUser } from "@application/use-cases/users/delete-user";
 import { GetUser } from "@application/use-cases/users/get-user";
@@ -50,15 +52,14 @@ import {
   OpenApiHandler,
   SwaggerUIHandler,
 } from "shared-controllers";
-import { JwtService, LoggerService } from "shared-services";
-import { ChangeRole } from "@application/use-cases/users/change-role";
-import { AuthSignIn } from "@application/use-cases/auth/sign-in";
+import { JwtService, KafkaPublisher, LoggerService } from "shared-services";
 
 type Env = {
   ENV: string;
 
   DATABASE_ENDPOINT: string;
   JWT_SECRET: string;
+  KAFKA_PROXY_ENDPOINT: string;
 };
 
 export const server = new Hono<{ Bindings: Env }>();
@@ -166,7 +167,10 @@ server.get("/users/:id", async function (c) {
 server.delete("/users/:id", async function (c) {
   const { env, req } = c;
   const controller = new DeleteUserController(
-    new DeleteUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+    new DeleteUser(
+      new UsersPostgre(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
+    )
   );
   const response = await controller.handle(req);
   return response;
@@ -184,7 +188,10 @@ server.patch("/users/:id", async function (c) {
 server.post("/users", async function (c) {
   const { env, req } = c;
   const controller = new CreateUserController(
-    new CreateUser(new UsersPostgre(env.DATABASE_ENDPOINT))
+    new CreateUser(
+      new UsersPostgre(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
+    )
   );
 
   const response = await controller.handle(req);

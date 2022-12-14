@@ -140,7 +140,10 @@ server.delete("/courses/:id", async function (c) {
   const { env, req } = c;
 
   const controller = new ArchiveCourseController(
-    new ArchiveCourse(new CoursesPostgres(env.DATABASE_ENDPOINT))
+    new ArchiveCourse(
+      new CoursesPostgres(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
+    )
   );
 
   const response = await controller.handle(req);

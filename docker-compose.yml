@@ -1,100 +1,100 @@
 version: "3"
 services:
-  # gateway_db:
-  #   build:
-  #     context: ./db
-  #     dockerfile: Dockerfile.db_dev
-  #     args:
-  #       DB: gateway
-  #   container_name: mesw-cosn-gateway_db
-  #   environment:
-  #     POSTGRES_DB: app_db
-  #     POSTGRES_USER: app_user
-  #     POSTGRES_PASSWORD: password
-  # gateway_db_rest:
-  #   build:
-  #     context: ./db
-  #     dockerfile: Dockerfile.db_rest
-  #   container_name: mesw-cosn-gateway_db_rest
-  #   environment:
-  #     PGRST_DB_URI: postgres://app_user:password@gateway_db:5432/app_db
-  #     # PGRST_DB_ANON_ROLE: postgres
-  #     PGRST_DB_ANON_ROLE: app_user
-  # gateway:
-  #   build:
-  #     context: .
-  #     dockerfile: workers/Dockerfile.dev
-  #     args:
-  #       WORKER: gateway
-  #   container_name: mesw-cosn-gateway
-  #   volumes:
-  #     - ./workers/gateway/src:/usr/src/app/workers/gateway/src
-  #   ports:
-  #     - "60000:8787"
-  # users_db:
-  #   build:
-  #     context: ./db
-  #     dockerfile: Dockerfile.db_dev
-  #     args:
-  #       DB: users
-  #   container_name: mesw-cosn-users_db
-  #   environment:
-  #     POSTGRES_DB: app_db
-  #     POSTGRES_USER: app_user
-  #     POSTGRES_PASSWORD: password
-  # users_db_rest:
-  #   build:
-  #     context: ./db
-  #     dockerfile: Dockerfile.db_rest
-  #   container_name: mesw-cosn-users_db_rest
-  #   environment:
-  #     PGRST_DB_URI: postgres://app_user:password@users_db:5432/app_db
-  #     # PGRST_DB_ANON_ROLE: postgres
-  #     PGRST_DB_ANON_ROLE: app_user
-  # users:
-  #   build:
-  #     context: .
-  #     dockerfile: workers/Dockerfile.dev
-  #     args:
-  #       WORKER: users
-  #   container_name: mesw-cosn-users
-  #   volumes:
-  #     - ./workers/users/src:/usr/src/app/workers/users/src
-  #   ports:
-  #     - "60001:8787"
-  # degrees_db:
-  #   build:
-  #     context: ./db
-  #     dockerfile: Dockerfile.db_dev
-  #     args:
-  #       DB: degrees
-  #   container_name: mesw-cosn-degrees_db
-  #   environment:
-  #     POSTGRES_DB: app_db
-  #     POSTGRES_USER: app_user
-  #     POSTGRES_PASSWORD: password
-  # degrees_db_rest:
-  #   build:
-  #     context: ./db
-  #     dockerfile: Dockerfile.db_rest
-  #     args:
-  #       PORT: 4000
-  #   container_name: mesw-cosn-degrees_db_rest
-  #   environment:
-  #     PGRST_DB_URI: postgres://app_user:password@degrees_db:5432/app_db
-  #     # PGRST_DB_ANON_ROLE: postgres
-  #     PGRST_DB_ANON_ROLE: app_user
-  # degrees:
-  #   build:
-  #     context: .
-  #     dockerfile: workers/Dockerfile.dev
-  #     args:
-  #       WORKER: degrees
-  #   container_name: mesw-cosn-degrees
-  #   volumes:
-  #     - ./workers/degrees/src:/usr/src/app/workers/degrees/src
-  #   ports:
-  #     - "60002:8787"
+  gateway_db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_dev
+      args:
+        DB: gateway
+    container_name: mesw-cosn-gateway_db
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: password
+  gateway_db_rest:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_rest
+    container_name: mesw-cosn-gateway_db_rest
+    environment:
+      PGRST_DB_URI: postgres://app_user:password@gateway_db:5432/app_db
+      # PGRST_DB_ANON_ROLE: postgres
+      PGRST_DB_ANON_ROLE: app_user
+  gateway:
+    build:
+      context: .
+      dockerfile: workers/Dockerfile.dev
+      args:
+        WORKER: gateway
+    container_name: mesw-cosn-gateway
+    volumes:
+      - ./workers/gateway/src:/usr/src/app/workers/gateway/src
+    ports:
+      - "60000:8787"
+  users_db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_dev
+      args:
+        DB: users
+    container_name: mesw-cosn-users_db
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: password
+  users_db_rest:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_rest
+    container_name: mesw-cosn-users_db_rest
+    environment:
+      PGRST_DB_URI: postgres://app_user:password@users_db:5432/app_db
+      # PGRST_DB_ANON_ROLE: postgres
+      PGRST_DB_ANON_ROLE: app_user
+  users:
+    build:
+      context: .
+      dockerfile: workers/Dockerfile.dev
+      args:
+        WORKER: users
+    container_name: mesw-cosn-users
+    volumes:
+      - ./workers/users/src:/usr/src/app/workers/users/src
+    ports:
+      - "60001:8787"
+  degrees_db:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_dev
+      args:
+        DB: degrees
+    container_name: mesw-cosn-degrees_db
+    environment:
+      POSTGRES_DB: app_db
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: password
+  degrees_db_rest:
+    build:
+      context: ./db
+      dockerfile: Dockerfile.db_rest
+      args:
+        PORT: 4000
+    container_name: mesw-cosn-degrees_db_rest
+    environment:
+      PGRST_DB_URI: postgres://app_user:password@degrees_db:5432/app_db
+      # PGRST_DB_ANON_ROLE: postgres
+      PGRST_DB_ANON_ROLE: app_user
+  degrees:
+    build:
+      context: .
+      dockerfile: workers/Dockerfile.dev
+      args:
+        WORKER: degrees
+    container_name: mesw-cosn-degrees
+    volumes:
+      - ./workers/degrees/src:/usr/src/app/workers/degrees/src
+    ports:
+      - "60002:8787"
   courses_db:
     build:
       context: ./db

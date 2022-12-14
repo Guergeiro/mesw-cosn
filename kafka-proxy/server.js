@@ -6,7 +6,10 @@ import { Kafka, Partitioners } from 'kafkajs';
 const app = express();
 
 const kafka = new Kafka({
-  brokers: [process.env.KAFKA_URL]
+  brokers: [process.env.KAFKA_URL],
+  retry: {
+    retries: 10
+  }
 });
 
 app.use(cors());
@@ -33,24 +36,6 @@ app.post('/topics', async (req, res) => {
     return res.status(500).send(err);
   }
 });
-
-// async function runConsumers() {
-//   const consumer = kafka.consumer({ groupId: 'mesw-courses' })
-
-//   await consumer.connect()
-//   await consumer.subscribe({ topics: ['course', 'faculty', 'degree', 'course'], fromBeginning: false })
-
-//   await consumer.run({
-//     eachMessage: async ({ partition, topic, message }) => {
-//       console.log({
-//         partition,
-//         topic,
-//         key: message.key.toString(),
-//         value: message.value.toString(),
-//       })
-//     },
-//   })
-// }
 
 class KafkaHandler {
   constructor(kafka) {
@@ -79,7 +64,7 @@ class KafkaHandler {
 app.listen(4000, () => {
   const kafkaHandler = new KafkaHandler(kafka);
   
-  kafkaHandler.runConsumers(['course', 'faculty', 'degree', 'course']);
+  kafkaHandler.runConsumers(['course', 'faculty', 'degree', 'user']);
 
   console.log('Server listening on http://127.0.0.1:4000/');
 })
