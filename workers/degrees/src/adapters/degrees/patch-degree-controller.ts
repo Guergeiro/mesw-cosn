@@ -55,9 +55,9 @@ export const patchDegree: PathItemObject = {
     },
     security: [
       {
-        bearerAuth: []
-      }
-    ]
+        bearerAuth: [],
+      },
+    ],
   },
 };
 

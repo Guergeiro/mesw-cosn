@@ -34,9 +34,9 @@ export const archiveDegree: PathItemObject = {
     ],
     security: [
       {
-        bearerAuth: []
-      }
-    ]
+        bearerAuth: [],
+      },
+    ],
   },
 };
 

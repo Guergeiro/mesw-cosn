@@ -37,9 +37,9 @@ export const blockUser: PathItemObject = {
     ],
     security: [
       {
-        bearerAuth: []
-      }
-    ]
+        bearerAuth: [],
+      },
+    ],
   },
 };
 

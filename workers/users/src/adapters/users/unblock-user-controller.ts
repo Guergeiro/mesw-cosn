@@ -37,9 +37,9 @@ export const unBlockUser: PathItemObject = {
     ],
     security: [
       {
-        bearerAuth: []
-      }
-    ]
+        bearerAuth: [],
+      },
+    ],
   },
 };
 

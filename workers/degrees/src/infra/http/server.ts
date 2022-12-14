@@ -70,9 +70,9 @@ server.get("/degrees/open-api", async function (c) {
           type: "http",
           scheme: "bearer",
           bearerFormat: "JWT",
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
   const controller = new OpenApiHandler(builder);

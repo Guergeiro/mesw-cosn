@@ -28,7 +28,11 @@ import { DegreesPostgres } from "@infra/db/postgres/degrees-postgres";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { OpenApiBuilder } from "openapi3-ts";
-import { ErrorHandler, OpenApiHandler, SwaggerUIHandler } from "shared-controllers";
+import {
+  ErrorHandler,
+  OpenApiHandler,
+  SwaggerUIHandler,
+} from "shared-controllers";
 import { LoggerService } from "shared-services";
 
 type Env = {
@@ -66,9 +70,9 @@ server.get("/courses/open-api", async function (c) {
           type: "http",
           scheme: "bearer",
           bearerFormat: "JWT",
-        }
-      }
-    }
+        },
+      },
+    },
   });
 
   const controller = new OpenApiHandler(builder);

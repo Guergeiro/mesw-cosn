@@ -55,9 +55,9 @@ export const updateUser: PathItemObject = {
     },
     security: [
       {
-        bearerAuth: []
-      }
-    ]
+        bearerAuth: [],
+      },
+    ],
   },
 };
 export class UpdateUserController implements Controller {

@@ -37,9 +37,9 @@ export const deleteUser: PathsObject = {
     ],
     security: [
       {
-        bearerAuth: []
-      }
-    ]
+        bearerAuth: [],
+      },
+    ],
   },
 };
 
