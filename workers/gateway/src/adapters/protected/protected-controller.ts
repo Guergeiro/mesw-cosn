@@ -23,7 +23,7 @@ export class ProtectedController implements Controller {
         method,
       });
 
-      return fetch(
+      return await fetch(
         this.getNewRequest(pathname, search, hash, host.hostname, request)
       );
     }
@@ -44,7 +44,7 @@ export class ProtectedController implements Controller {
       method,
     });
 
-    return fetch(
+    return await fetch(
       this.getNewRequest(pathname, search, hash, host.hostname, request)
     );
   }
@@ -59,6 +59,7 @@ export class ProtectedController implements Controller {
     const newUrl = new URL(`${pathname}${search}${hash}`, hostname);
 
     const newRequest = new Request(newUrl.toString(), originalRequest);
+
     return newRequest;
   }
 }

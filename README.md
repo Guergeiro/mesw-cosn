@@ -38,6 +38,19 @@ specification:
 - https://cosn-degrees.brenosalles.workers.dev/degrees/open-api
 - https://cosn-courses.brenosalles.workers.dev/courses/open-api
 
+You can then use the generated _JSON_/_YAML_ in any Swagger UI editor. We do
+provide a simple wrapper of a Swagger UI, available at:
+
+- https://cosn-users.brenosalles.workers.dev/users/swagger-ui
+- https://cosn-degrees.brenosalles.workers.dev/degrees/swagger-ui
+- https://cosn-courses.brenosalles.workers.dev/courses/swagger-ui
+
+The Gateway Worker also provides the Swagger UI for each of the workers listed
+above. Could be interesting if you want to test the logic with the
+authentication/authorization.
+
+- https://cosn-gateway.brenosalles.workers.dev/{WORKER}/swagger-ui
+
 ## Requirements
 
 ### For running in local mode

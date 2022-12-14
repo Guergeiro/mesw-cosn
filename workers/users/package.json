@@ -3,7 +3,7 @@
   "scripts": {
     "wrangler": "wrangler",
     "dev": "wrangler dev --host 0.0.0.0 --local",
-    "deploy": "wrangler publish"
+    "deploy": "wrangler publish --env production"
   },
   "dependencies": {
     "@supabase/postgrest-js": "^1.1.0",
