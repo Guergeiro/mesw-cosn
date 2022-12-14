@@ -28,7 +28,11 @@ import { FacultiesPostgres } from "@infra/db/postgres/faculties-postgres";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { OpenApiBuilder } from "openapi3-ts";
-import { ErrorHandler, OpenApiHandler } from "shared-controllers";
+import {
+  ErrorHandler,
+  OpenApiHandler,
+  SwaggerUIHandler,
+} from "shared-controllers";
 import { LoggerService } from "shared-services";
 
 type Env = {
@@ -64,6 +68,13 @@ server.get("/degrees/open-api", async function (c) {
 
   const controller = new OpenApiHandler(builder);
 
+  return await controller.handle(req);
+});
+
+server.get("/degrees/swagger-ui", async function (c) {
+  const { req } = c;
+
+  const controller = new SwaggerUIHandler("open-api");
   return await controller.handle(req);
 });
 

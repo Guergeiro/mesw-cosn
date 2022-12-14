@@ -42,7 +42,7 @@ import { UsersPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { OpenApiBuilder } from "openapi3-ts";
-import { ErrorHandler, OpenApiHandler } from "shared-controllers";
+import { ErrorHandler, OpenApiHandler, SwaggerUIHandler } from "shared-controllers";
 import { JwtService, LoggerService } from "shared-services";
 import { ChangeRole } from "@application/use-cases/users/change-role";
 import { AuthSignIn } from "@application/use-cases/auth/sign-in";
@@ -89,6 +89,13 @@ server.get("/users/open-api", async function (c) {
 
   const controller = new OpenApiHandler(builder);
 
+  return await controller.handle(req);
+});
+
+server.get("/users/swagger-ui", async function (c) {
+  const { req } = c;
+
+  const controller = new SwaggerUIHandler("open-api");
   return await controller.handle(req);
 });
 

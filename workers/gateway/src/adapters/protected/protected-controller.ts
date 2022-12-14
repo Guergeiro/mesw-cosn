@@ -12,6 +12,22 @@ export class ProtectedController implements Controller {
   }
 
   public async handle(request: Request) {
+    const { pathname, hash, search } = new URL(request.url);
+
+    const { method } = request;
+
+    if (method === "GET") {
+      // early exit point
+      const host = await this.#useCase.execute({
+        pathname,
+        method,
+      });
+
+      return fetch(
+        this.getNewRequest(pathname, search, hash, host.hostname, request)
+      );
+    }
+
     const auth = request.headers.get("authorization");
     if (auth == null) {
       throw new UnauthorizedException();
@@ -22,18 +38,27 @@ export class ProtectedController implements Controller {
       throw new PreconditionFailedException();
     }
 
-    const { pathname, hash, search } = new URL(request.url);
-
     const host = await this.#useCase.execute({
       pathname,
       jwtToken,
-      method: request.method,
+      method,
     });
 
-    const newUrl = new URL(`${pathname}${search}${hash}`, host.hostname);
+    return fetch(
+      this.getNewRequest(pathname, search, hash, host.hostname, request)
+    );
+  }
 
-    const newRequest = new Request(newUrl.toString(), request);
+  private getNewRequest(
+    pathname: string,
+    search: string,
+    hash: string,
+    hostname: string,
+    originalRequest: Request
+  ) {
+    const newUrl = new URL(`${pathname}${search}${hash}`, hostname);
 
-    return fetch(newRequest);
+    const newRequest = new Request(newUrl.toString(), originalRequest);
+    return newRequest;
   }
 }

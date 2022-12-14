@@ -5,7 +5,7 @@ import { NotFoundException, UnauthorizedException } from "shared-exceptions";
 import { UseCase } from "shared-use-cases";
 
 type AuthorizeRequestInput = {
-  jwtToken: string;
+  jwtToken?: string;
   pathname: string;
   method: string;
 };
@@ -35,6 +35,10 @@ export class AuthorizeRequest
       return host;
     }
 
+    if (jwtToken == null) {
+      return host;
+    }
+
     const payload = await this.#jwtService.verify(jwtToken);
 
     if (this.canAccess(pathname, method, payload.role as string) === false) {
@@ -49,10 +53,6 @@ export class AuthorizeRequest
       return true;
     }
 
-    if (method === "GET") {
-      return true;
-    }
-
     switch (role) {
       case "faculty":
         return this.checkFaculty(pathname, method);
@@ -60,7 +60,20 @@ export class AuthorizeRequest
         return this.checkStudent(pathname, method);
     }
 
-    return true;
+    return this.checkAnyRole(pathname, method);
+  }
+
+  private checkAnyRole(pathname: string, method: string) {
+    switch (pathname) {
+      case "degrees":
+      case "courses":
+        return false;
+    }
+    switch (method) {
+      case "POST":
+        return true;
+    }
+    return false;
   }
 
   private checkFaculty(pathname: string, method: string) {
