@@ -33,12 +33,13 @@ import {
   OpenApiHandler,
   SwaggerUIHandler,
 } from "shared-controllers";
-import { LoggerService } from "shared-services";
+import { KafkaPublisher, LoggerService } from "shared-services";
 
 type Env = {
   ENV: string;
 
   DATABASE_ENDPOINT: string;
+  KAFKA_PROXY_ENDPOINT: string;
 };
 
 export const server = new Hono<{ Bindings: Env }>();
@@ -93,7 +94,8 @@ server.post("/courses", async function (c) {
   const controller = new CreateController(
     new CreateCourse(
       new CoursesPostgres(env.DATABASE_ENDPOINT),
-      new DegreesPostgres(env.DATABASE_ENDPOINT)
+      new DegreesPostgres(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
     )
   );
 
@@ -138,7 +140,10 @@ server.delete("/courses/:id", async function (c) {
   const { env, req } = c;
 
   const controller = new ArchiveCourseController(
-    new ArchiveCourse(new CoursesPostgres(env.DATABASE_ENDPOINT))
+    new ArchiveCourse(
+      new CoursesPostgres(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
+    )
   );
 
   const response = await controller.handle(req);
