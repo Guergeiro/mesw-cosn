@@ -1,5 +1,5 @@
 export class KafkaPublisher {
-  #url: string;
+  readonly #url: string;
 
   constructor(url: string) {
     this.#url = url;
