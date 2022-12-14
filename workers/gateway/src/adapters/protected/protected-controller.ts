@@ -1,51 +1,32 @@
 import { AuthorizeRequest } from "@application/use-cases/authorize-request/authorize-request";
 import { Controller } from "shared-controllers";
-import {
-  PreconditionFailedException,
-  UnauthorizedException,
-} from "shared-exceptions";
 
 export class ProtectedController implements Controller {
   readonly #useCase: AuthorizeRequest;
-  public constructor(useCase: AuthorizeRequest) {
+  readonly #fetchFn: (request: Request, path: string) => Promise<Response>;
+
+  public constructor(
+    useCase: AuthorizeRequest,
+    fetchFn: (request: Request, path: string) => Promise<Response>
+  ) {
     this.#useCase = useCase;
+    this.#fetchFn = fetchFn;
   }
 
   public async handle(request: Request) {
     const { pathname, hash, search } = new URL(request.url);
 
-    const { method } = request;
-
-    if (method === "GET") {
-      // early exit point
-      const host = await this.#useCase.execute({
-        pathname,
-        method,
-      });
-
-      return await fetch(
-        this.getNewRequest(pathname, search, hash, host.hostname, request)
-      );
-    }
-
-    const auth = request.headers.get("authorization");
-    if (auth == null) {
-      throw new UnauthorizedException();
-    }
-    const [basic, jwtToken] = auth.split(" ", 2);
-
-    if (basic.toLowerCase() !== "bearer") {
-      throw new PreconditionFailedException();
-    }
+    const { method, headers } = request;
 
     const host = await this.#useCase.execute({
       pathname,
-      jwtToken,
+      headers,
       method,
     });
 
-    return await fetch(
-      this.getNewRequest(pathname, search, hash, host.hostname, request)
+    return await this.#fetchFn(
+      this.getNewRequest(pathname, search, hash, host.hostname, request),
+      host.pathname
     );
   }
 

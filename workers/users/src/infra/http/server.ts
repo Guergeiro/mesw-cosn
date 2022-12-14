@@ -30,7 +30,10 @@ import {
   unBlockUser,
   UnblockUserController,
 } from "@adapters/users/unblock-user-controller";
-import { UpdateUserController } from "@adapters/users/update-user-controller";
+import {
+  updateUser,
+  UpdateUserController,
+} from "@adapters/users/update-user-controller";
 import { BlockUser } from "@application/use-cases/users/block-user";
 import { CreateUser } from "@application/use-cases/users/create-user";
 import { DeleteUser } from "@application/use-cases/users/delete-user";
@@ -84,7 +87,7 @@ server.get("/users/open-api", async function (c) {
     paths: {
       "/auth/sign-in": { ...signIn },
       "/users": { ...getUsers, ...createUser },
-      "/users/{userId}": { ...getUser, ...deleteUser },
+      "/users/{userId}": { ...getUser, ...deleteUser, ...updateUser },
       "/users/{userId}/ops/block": { ...blockUser },
       "/users/{userId}/ops/unblock": { ...unBlockUser },
       "/users/{userId}/ops/change-role": { ...changeRole },

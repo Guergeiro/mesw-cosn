@@ -1,13 +1,17 @@
 import { Host } from "@domain/entities/host";
 import { HostsRepository } from "@domain/repositories/hosts";
 import { JwtService } from "shared-services";
-import { NotFoundException, UnauthorizedException } from "shared-exceptions";
+import {
+  NotFoundException,
+  PreconditionFailedException,
+  UnauthorizedException,
+} from "shared-exceptions";
 import { UseCase } from "shared-use-cases";
 
 type AuthorizeRequestInput = {
-  jwtToken?: string;
   pathname: string;
   method: string;
+  headers: Headers;
 };
 
 type AuthorizeRequestOutput = Host;
@@ -23,7 +27,7 @@ export class AuthorizeRequest
     this.#jwtService = jwtService;
   }
 
-  public async execute({ pathname, jwtToken, method }: AuthorizeRequestInput) {
+  public async execute({ pathname, headers, method }: AuthorizeRequestInput) {
     const [_, firstPath] = pathname.split("/", 2);
     const host = await this.#hostsRepository.findByPathname(firstPath);
 
@@ -31,12 +35,26 @@ export class AuthorizeRequest
       throw new NotFoundException();
     }
 
+    if (method === "GET") {
+      return host;
+    }
+
     if (host.protected === false) {
       return host;
     }
 
-    if (jwtToken == null) {
+    if (host.pathname === "users" && method === "POST") {
       return host;
+    }
+
+    const auth = headers.get("authorization");
+    if (auth == null) {
+      throw new UnauthorizedException();
+    }
+    const [basic, jwtToken] = auth.split(" ", 2);
+
+    if (basic.toLowerCase() !== "bearer") {
+      throw new PreconditionFailedException();
     }
 
     const payload = await this.#jwtService.verify(jwtToken);

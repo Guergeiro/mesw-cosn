@@ -5,7 +5,13 @@ account_id = "6cac6bb74225f44bf6842d3c8cf604e9"
 
 [env.production]
 name = "cosn-gateway"
+services = [
+  { binding = "users", service = "cosn-users", environment = "production" },
+  { binding = "degrees", service = "cosn-degrees", environment = "production" },
+  { binding = "courses", service = "cosn-courses", environment = "production" }
+]
 
 [env.production.vars]
 ENV = "production"
 DATABASE_ENDPOINT = "https://dbrest-production.up.railway.app"
+
