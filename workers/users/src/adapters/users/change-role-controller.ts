@@ -51,6 +51,11 @@ export const changeRole: PathItemObject = {
         },
       },
     },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
 };
 
