@@ -4,12 +4,14 @@ import { HostsPostgre } from "@infra/db/postgre";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { ErrorHandler } from "shared-controllers";
-import { JwtService, LoggerService } from "shared-services";
+import { JwtService, ConsoleLogger, SentryLogger } from "shared-services";
 
 type FetchFn = (request: Request) => Promise<Response>;
 
 type Env = {
   ENV: string;
+  SENTRY_DSN: string;
+  RELEASE: string;
   DATABASE_ENDPOINT: string;
   JWT_SECRET: string;
 
@@ -48,8 +50,15 @@ server.all("*", async function (c) {
 });
 
 server.onError(function (err, c) {
-  const { env } = c;
-  const errorHandler = new ErrorHandler(new LoggerService(env.ENV));
-  const response = errorHandler.handle(err);
+  const { env, req } = c;
+  const errorHandler = new ErrorHandler(
+    new SentryLogger(
+      new ConsoleLogger(env.ENV),
+      env.ENV,
+      env.SENTRY_DSN,
+      env.RELEASE
+    )
+  );
+  const response = errorHandler.handle(err, req);
   return response;
 });

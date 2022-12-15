@@ -6,17 +6,17 @@ import {
   PreconditionFailedException,
   UnauthorizedException,
 } from "shared-exceptions";
-import { LoggerService } from "shared-services";
+import { Logger } from "shared-services";
 
 export class ErrorHandler {
-  readonly #logger: LoggerService;
+  readonly #logger: Logger;
 
-  public constructor(logger: LoggerService) {
+  public constructor(logger: Logger) {
     this.#logger = logger;
   }
 
-  public handle(error: Error) {
-    this.#logger.error(error);
+  public handle(error: Error, request: Request) {
+    this.#logger.error(error, request);
     const headers = new Headers();
     headers.set("Content-Type", "application/json");
     if (error instanceof BadRequestException) {

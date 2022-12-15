@@ -43,9 +43,11 @@ importers:
 
   shared/services:
     specifiers:
+      '@cfworker/sentry': ^1.12.4
       jose: ^4.11.1
       shared-exceptions: workspace:shared-exceptions*
     dependencies:
+      '@cfworker/sentry': 1.12.4
       jose: 4.11.1
       shared-exceptions: link:../exceptions
 
@@ -135,11 +137,26 @@ packages:
       zod: 3.19.1
     dev: false
 
+  /@cfworker/sentry/1.12.4:
+    resolution: {integrity: sha512-20brfZduUBcyZDJHv4gpv+v+ktELxOiuUPkqkQQQEoqRCxkUqsyLV9vIjNfy0MQtN7fqmd4pbN0F8AyC6ju5EQ==}
+    dependencies:
+      '@cfworker/worker-types': 1.12.3
+      '@cloudflare/workers-types': 2.2.2
+    dev: false
+
+  /@cfworker/worker-types/1.12.3:
+    resolution: {integrity: sha512-p9wWxB1n+D0Mm9YFYcU80Ea9rUqYDAkuYvSPjKezCSjFKGDm12x9S/8md33h7a4IAzxtO9pfOVoVLvVI2hpR9g==}
+    dev: false
+
   /@cloudflare/kv-asset-handler/0.2.0:
     resolution: {integrity: sha512-MVbXLbTcAotOPUj0pAMhVtJ+3/kFkwJqc5qNOleOZTv6QkZZABDMS21dSrSlVswEHwrpWC03e4fWytjqKvuE2A==}
     dependencies:
       mime: 3.0.0
     dev: true
+
+  /@cloudflare/workers-types/2.2.2:
+    resolution: {integrity: sha512-kaMn2rueJ0PL1TYVGknTCh0X0x0d9G+FNXAFep7/4uqecEZoQb/63o6rOmMuiqI09zLuHV6xhKRXinokV/MY9A==}
+    dev: false
 
   /@cloudflare/workers-types/3.18.0:
     resolution: {integrity: sha512-ehKOJVLMeR+tZkYhWEaLYQxl0TaIZu/kE86HF3/RidR8Xv5LuQxpbh+XXAoKVqsaphWLhIgBhgnlN5HGdheXSQ==}
