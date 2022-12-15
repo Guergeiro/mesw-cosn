@@ -20,6 +20,7 @@ import {
 } from "@adapters/courses/patch-course-controller";
 import { KafkaHandlerController } from "@adapters/degrees/kafka-handler-controller";
 import { ArchiveCourse } from "@application/use-cases/courses/archive-course";
+import { ArchiveCoursesByDegreeId } from "@application/use-cases/courses/archive-courses-by-degreeId";
 import { CreateCourse } from "@application/use-cases/courses/create-course";
 import { GetCourse } from "@application/use-cases/courses/get-course";
 import { GetCourses } from "@application/use-cases/courses/get-courses";
@@ -158,7 +159,11 @@ server.post("/degrees", async function (c) {
 
   const controller = new KafkaHandlerController(
     new CreateDegree(new DegreesPostgres(env.DATABASE_ENDPOINT)),
-    new ArchiveDegree(new DegreesPostgres(env.DATABASE_ENDPOINT))
+    new ArchiveDegree(new DegreesPostgres(env.DATABASE_ENDPOINT)),
+    new ArchiveCoursesByDegreeId(
+      new CoursesPostgres(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
+    )
   );
 
   const response = await controller.handle(req);

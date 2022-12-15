@@ -1,9 +1,8 @@
 import { DegreeRepository } from "@domain/repositories/degree";
 import { UseCase } from "shared-use-cases";
+import { Degree } from "../../../domain/entities/degree";
 
-type ArchiveDegreeInput = {
-  id: string;
-};
+type ArchiveDegreeInput = Degree["id"];
 
 type ArchiveDegreeOutput = void;
 
@@ -17,6 +16,6 @@ export class ArchiveDegree
   }
 
   async execute(input: ArchiveDegreeInput): Promise<ArchiveDegreeOutput> {
-    await this.#degreeRepository.delete(input.id);
+    await this.#degreeRepository.delete(input);
   }
 }

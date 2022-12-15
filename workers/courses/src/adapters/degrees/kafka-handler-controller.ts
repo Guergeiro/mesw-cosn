@@ -1,3 +1,4 @@
+import { ArchiveCoursesByDegreeId } from "@application/use-cases/courses/archive-courses-by-degreeId";
 import { ArchiveDegree } from "@application/use-cases/degrees/archive-degree";
 import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { Controller } from "shared-controllers";
@@ -10,15 +11,18 @@ const bodyValidator = z.object({
 });
 
 export class KafkaHandlerController implements Controller {
-  readonly #createUseCase: CreateDegree;
-  readonly #archiveUseCase: ArchiveDegree;
+  readonly #createDegreeUseCase: CreateDegree;
+  readonly #archiveDegreeUseCase: ArchiveDegree;
+  readonly #archiveCoursesByDegreeIdUseCase: ArchiveCoursesByDegreeId;
 
   public constructor(
-    createUseCase: CreateDegree,
-    archiveUseCase: ArchiveDegree
+    createDegreeUseCase: CreateDegree,
+    archiveDegreeUseCase: ArchiveDegree,
+    archiveCoursesByDegreeIdUseCase: ArchiveCoursesByDegreeId
   ) {
-    this.#createUseCase = createUseCase;
-    this.#archiveUseCase = archiveUseCase;
+    this.#createDegreeUseCase = createDegreeUseCase;
+    this.#archiveDegreeUseCase = archiveDegreeUseCase;
+    this.#archiveCoursesByDegreeIdUseCase = archiveCoursesByDegreeIdUseCase;
   }
 
   public async handle(request: Request) {
@@ -35,11 +39,12 @@ export class KafkaHandlerController implements Controller {
 
     switch (parsed.data.operation) {
       case "created":
-        await this.#createUseCase.execute({ id: parsed.data.id });
+        await this.#createDegreeUseCase.execute({ id: parsed.data.id });
         break;
 
       case "archived":
-        await this.#archiveUseCase.execute({ id: parsed.data.id });
+        await this.#archiveDegreeUseCase.execute(parsed.data.id);
+        await this.#archiveCoursesByDegreeIdUseCase.execute(parsed.data.id);
         break;
 
       default:
