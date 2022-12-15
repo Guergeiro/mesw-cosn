@@ -7,7 +7,7 @@ import { z } from "zod";
 
 const queryValidator = z
   .object({
-    facultyId: z.string().uuid().optional(),
+    facultyId: z.string().regex(/^\d+$/).transform(Number).optional(),
     eqfLevel: z.nativeEnum(EqfLevelEnum).optional(),
     status: z.nativeEnum(DegreeStatusEnum).optional(),
   })
