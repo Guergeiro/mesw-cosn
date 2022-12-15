@@ -2,7 +2,7 @@ drop table if exists degrees;
 
 create table degrees (
     "id" uuid default gen_random_uuid(),
-    "facultyId" uuid not null,
+    "facultyId" integer not null,
     "code" text not null,
     "name" text not null,
     "eqfLevel" text not null,
@@ -18,9 +18,9 @@ create table degrees (
 drop table if exists faculties;
 
 create table faculties (
-    "id" uuid default gen_random_uuid(),
+    "id" integer not null,
     primary key (id)
 );
 
 insert into faculties (id)
-values ('73e12576-04e0-465d-9ba8-1c3c8bcd9d54'), ('78420303-653c-417f-a397-b9fc7e441975');
+values (1), (2);

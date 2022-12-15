@@ -2,6 +2,7 @@
 import cors from 'cors';
 import express, { json } from 'express';
 import { Kafka, Partitioners } from 'kafkajs';
+import fetch from 'node-fetch';
 
 const app = express();
 
@@ -50,6 +51,32 @@ class KafkaHandler {
 
     await consumer.run({
       eachMessage: async ({ partition, topic, message }) => {
+
+        const body = {
+          id: message.value.toString(),
+          operation: message.key.toString(),
+        }
+
+        if(topic === 'faculty') {
+          await fetch(`http://${process.env.DEGREES_URL}/${topic}s`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          });
+        }
+
+        if(topic === 'degree') {
+          await fetch(`http://${process.env.COURSES_URL}/${topic}s`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(body),
+          });
+        }
+
         console.log({
           partition,
           topic,

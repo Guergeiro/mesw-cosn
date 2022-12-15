@@ -153,6 +153,8 @@ services:
       - kafka
     environment:
       KAFKA_URL: kafka:9092
+      DEGREES_URL: degrees:8787
+      COURSES_URL: courses:8787
     volumes:
       - ./kafka-proxy:/usr/src/app/kafka-proxy
     ports:
