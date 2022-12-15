@@ -1,6 +1,7 @@
 {
   "name": "shared-services",
   "dependencies": {
+    "@cfworker/sentry": "^1.12.4",
     "jose": "^4.11.1",
     "shared-exceptions": "workspace:shared-exceptions*"
   }

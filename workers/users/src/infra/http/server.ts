@@ -52,11 +52,17 @@ import {
   OpenApiHandler,
   SwaggerUIHandler,
 } from "shared-controllers";
-import { JwtService, KafkaPublisher, LoggerService } from "shared-services";
+import {
+  JwtService,
+  KafkaPublisher,
+  ConsoleLogger,
+  SentryLogger,
+} from "shared-services";
 
 type Env = {
   ENV: string;
-
+  SENTRY_DSN: string;
+  RELEASE: string;
   DATABASE_ENDPOINT: string;
   JWT_SECRET: string;
   KAFKA_PROXY_ENDPOINT: string;
@@ -208,8 +214,15 @@ server.get("/users", async function (c) {
 });
 
 server.onError(function (err, c) {
-  const { env } = c;
-  const errorHandler = new ErrorHandler(new LoggerService(env.ENV));
-  const response = errorHandler.handle(err);
+  const { env, req } = c;
+  const errorHandler = new ErrorHandler(
+    new SentryLogger(
+      new ConsoleLogger(env.ENV),
+      env.ENV,
+      env.SENTRY_DSN,
+      env.RELEASE
+    )
+  );
+  const response = errorHandler.handle(err, req);
   return response;
 });

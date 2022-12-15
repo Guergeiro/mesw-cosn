@@ -1,41 +1,11 @@
-export class LoggerService {
-  readonly #env: string;
+export interface Logger {
+  log(...data: unknown[]): void;
 
-  public constructor(env: string) {
-    this.#env = env;
-  }
+  error(...data: unknown[]): void;
 
-  public log(...data: unknown[]) {
-    if (this.willLog() === true) {
-      console.log(...data);
-    }
-  }
+  info(...data: unknown[]): void;
 
-  public error(...data: unknown[]) {
-    if (this.willLog() === true) {
-      console.error(...data);
-    }
-  }
+  warn(...data: unknown[]): void;
 
-  public info(...data: unknown[]) {
-    if (this.willLog() === true) {
-      console.info(...data);
-    }
-  }
-
-  public warn(...data: unknown[]) {
-    if (this.willLog() === true) {
-      console.warn(...data);
-    }
-  }
-
-  public debug(...data: unknown[]) {
-    if (this.willLog() === true) {
-      console.debug(...data);
-    }
-  }
-
-  private willLog() {
-    return this.#env !== "production";
-  }
+  debug(...data: unknown[]): void;
 }

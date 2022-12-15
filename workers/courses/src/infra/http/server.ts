@@ -33,11 +33,12 @@ import {
   OpenApiHandler,
   SwaggerUIHandler,
 } from "shared-controllers";
-import { KafkaPublisher, LoggerService } from "shared-services";
+import { KafkaPublisher, ConsoleLogger, SentryLogger } from "shared-services";
 
 type Env = {
   ENV: string;
-
+  SENTRY_DSN: string;
+  RELEASE: string;
   DATABASE_ENDPOINT: string;
   KAFKA_PROXY_ENDPOINT: string;
 };
@@ -151,8 +152,15 @@ server.delete("/courses/:id", async function (c) {
 });
 
 server.onError(function (err, c) {
-  const { env } = c;
-  const errorHandler = new ErrorHandler(new LoggerService(env.ENV));
-  const response = errorHandler.handle(err);
+  const { env, req } = c;
+  const errorHandler = new ErrorHandler(
+    new SentryLogger(
+      new ConsoleLogger(env.ENV),
+      env.ENV,
+      env.SENTRY_DSN,
+      env.RELEASE
+    )
+  );
+  const response = errorHandler.handle(err, req);
   return response;
 });

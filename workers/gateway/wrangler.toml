@@ -14,4 +14,4 @@ services = [
 [env.production.vars]
 ENV = "production"
 DATABASE_ENDPOINT = "https://dbrest-production.up.railway.app"
-
+RELEASE = "gateway"
