@@ -6,7 +6,7 @@ import { BadRequestException } from "shared-exceptions";
 import { z } from "zod";
 
 const bodyValidator = z.object({
-  id: z.string().uuid(),
+  id: z.number(),
   operation: z.enum(["created", "archived"]),
 });
 

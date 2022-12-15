@@ -3,7 +3,7 @@ import { FacultyRepository } from "@domain/repositories/faculty";
 import { UseCase } from "shared-use-cases";
 
 type CreateFacultyInput = {
-  id: string;
+  id: number;
 };
 
 type CreateFacultyOutput = void;

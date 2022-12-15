@@ -7,7 +7,7 @@ import { KafkaPublisher } from "shared-services";
 import { UseCase } from "shared-use-cases";
 
 type CreateDegreeInput = {
-  facultyId: string;
+  facultyId: number;
   code: string;
   name: string;
   eqfLevel: EqfLevelEnum;

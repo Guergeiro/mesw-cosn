@@ -1,14 +1,14 @@
 import { PersistentEntity } from "shared-entities";
 
 export type FacultyProps = {
-  id?: string;
+  id: number;
 };
 
 export class Faculty implements PersistentEntity {
-  readonly #id: string;
+  readonly #id: number;
 
   public constructor(props: FacultyProps) {
-    this.#id = props.id ?? crypto.randomUUID();
+    this.#id = props.id;
   }
 
   public get id() {
