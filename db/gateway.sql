@@ -14,3 +14,17 @@ values
 ('auth', 'http://users:8787', false),
 ('degrees', 'http://degrees:8787', true),
 ('courses', 'http://courses:8787', true);
+
+insert into hosts (pathname, hostname, protected)
+values
+
+('lecture', 'http://ec2-34-233-124-51.compute-1.amazonaws.com:5000', true),
+('professor', 'http://ec2-34-233-124-51.compute-1.amazonaws.com:5000', true),
+('assignment', 'http://ec2-34-233-124-51.compute-1.amazonaws.com:5000', true),
+('course', 'http://ec2-34-233-124-51.compute-1.amazonaws.com:5000', true);
+
+insert into hosts (pathname, hostname, protected)
+values
+('faculty', 'https://orlandopt.pythonanywhere.com', true),
+('tuition-fee', 'https://hugofpaiva.pythonanywhere.com', true),
+('classrooms', 'https://orlandop.pythonanywhere.com', true);

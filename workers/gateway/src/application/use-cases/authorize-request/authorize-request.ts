@@ -78,19 +78,6 @@ export class AuthorizeRequest
         return this.checkStudent(pathname, method);
     }
 
-    return this.checkAnyRole(pathname, method);
-  }
-
-  private checkAnyRole(pathname: string, method: string) {
-    switch (pathname) {
-      case "degrees":
-      case "courses":
-        return false;
-    }
-    switch (method) {
-      case "POST":
-        return true;
-    }
     return false;
   }
 
@@ -98,12 +85,27 @@ export class AuthorizeRequest
     switch (pathname) {
       case "degrees":
       case "courses":
+
+      case "lecture":
+      case "professor":
+      case "assignment":
+      case "course":
         return true;
-    }
-    switch (method) {
-      case "PUT":
-      case "PATCH":
-        return true;
+
+      case "faculty":
+      case "classrooms":
+      case "tuition-fee":
+        return false;
+
+      case "users":
+        switch (method) {
+          case "PUT":
+          case "PATCH":
+            return true;
+          case "DELETE":
+            return false;
+        }
+        break;
     }
     return false;
   }
@@ -112,12 +114,26 @@ export class AuthorizeRequest
     switch (pathname) {
       case "degrees":
       case "courses":
+
+      case "lecture":
+      case "professor":
+      case "assignment":
+      case "course":
+
+      case "faculty":
+      case "classrooms":
+      case "tuition-fee":
         return false;
-    }
-    switch (method) {
-      case "PUT":
-      case "PATCH":
-        return true;
+
+      case "users":
+        switch (method) {
+          case "PUT":
+          case "PATCH":
+            return true;
+          case "DELETE":
+            return false;
+        }
+        break;
     }
     return false;
   }
