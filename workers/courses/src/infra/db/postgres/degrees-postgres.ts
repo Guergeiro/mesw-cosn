@@ -19,6 +19,10 @@ export class DegreesPostgres implements DegreeRepository {
       if (error != null) {
         throw new InternalServerErrorException(error.message);
       }
+
+      const { data } = await this.#client.from("degrees").select();
+
+      console.log(data);
     });
   }
 
@@ -43,5 +47,9 @@ export class DegreesPostgres implements DegreeRepository {
     if (error != null) {
       throw new InternalServerErrorException(error.message);
     }
+
+    const { data } = await this.#client.from("degrees").select();
+
+    console.log(data);
   }
 }

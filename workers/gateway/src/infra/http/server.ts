@@ -28,7 +28,8 @@ server.all("*", async function (c) {
     if (env.ENV !== "development") {
       switch (path) {
         case "users":
-        case "auth": return await env.users.fetch(request);
+        case "auth":
+          return await env.users.fetch(request);
         case "degrees":
           return await env.degrees.fetch(request);
         case "courses":

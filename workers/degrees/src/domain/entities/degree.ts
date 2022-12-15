@@ -9,7 +9,7 @@ export type DegreeFilters = {
 
 export type DegreeProps = {
   id?: string;
-  facultyId: string;
+  facultyId: number;
   code: string;
   name: string;
   eqfLevel: EqfLevelEnum;
@@ -22,7 +22,7 @@ export type DegreeProps = {
 
 export class Degree implements JsonEntity, PersistentEntity {
   readonly #id: string;
-  readonly #facultyId: string;
+  readonly #facultyId: number;
   readonly #code: string;
   readonly #name: string;
   readonly #eqfLevel: EqfLevelEnum;

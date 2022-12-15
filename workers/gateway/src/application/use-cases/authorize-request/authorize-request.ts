@@ -85,16 +85,18 @@ export class AuthorizeRequest
     switch (pathname) {
       case "degrees":
       case "courses":
-
       case "lecture":
       case "professor":
       case "assignment":
       case "course":
+      case "article":
+      case "classrooms":
+      case "classroom":
         return true;
 
       case "faculty":
-      case "classrooms":
       case "tuition-fee":
+      case "tuition-fees":
         return false;
 
       case "users":
@@ -114,15 +116,16 @@ export class AuthorizeRequest
     switch (pathname) {
       case "degrees":
       case "courses":
-
       case "lecture":
       case "professor":
       case "assignment":
       case "course":
-
       case "faculty":
+      case "article":
+      case "classroom":
       case "classrooms":
       case "tuition-fee":
+      case "tuition-fees":
         return false;
 
       case "users":

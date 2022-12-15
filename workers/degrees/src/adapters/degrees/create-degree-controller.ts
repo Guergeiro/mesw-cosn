@@ -7,7 +7,7 @@ import { BadRequestException } from "shared-exceptions";
 import { z } from "zod";
 
 const bodyValidator = z.object({
-  facultyId: z.string().uuid(),
+  facultyId: z.number(),
   code: z.string(),
   name: z.string(),
   eqfLevel: z.nativeEnum(EqfLevelEnum),

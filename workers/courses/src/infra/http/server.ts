@@ -18,11 +18,15 @@ import {
   patchCourse,
   PatchCourseController,
 } from "@adapters/courses/patch-course-controller";
+import { KafkaHandlerController } from "@adapters/degrees/kafka-handler-controller";
 import { ArchiveCourse } from "@application/use-cases/courses/archive-course";
+import { ArchiveCoursesByDegreeId } from "@application/use-cases/courses/archive-courses-by-degreeId";
 import { CreateCourse } from "@application/use-cases/courses/create-course";
 import { GetCourse } from "@application/use-cases/courses/get-course";
 import { GetCourses } from "@application/use-cases/courses/get-courses";
 import { PatchCourse } from "@application/use-cases/courses/patch-course";
+import { ArchiveDegree } from "@application/use-cases/degrees/archive-degree";
+import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { CoursesPostgres } from "@infra/db/postgres/courses-postgres";
 import { DegreesPostgres } from "@infra/db/postgres/degrees-postgres";
 import { Hono } from "hono";
@@ -142,6 +146,22 @@ server.delete("/courses/:id", async function (c) {
 
   const controller = new ArchiveCourseController(
     new ArchiveCourse(
+      new CoursesPostgres(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
+    )
+  );
+
+  const response = await controller.handle(req);
+  return response;
+});
+
+server.post("/degrees", async function (c) {
+  const { env, req } = c;
+
+  const controller = new KafkaHandlerController(
+    new CreateDegree(new DegreesPostgres(env.DATABASE_ENDPOINT)),
+    new ArchiveDegree(new DegreesPostgres(env.DATABASE_ENDPOINT)),
+    new ArchiveCoursesByDegreeId(
       new CoursesPostgres(env.DATABASE_ENDPOINT),
       new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
     )

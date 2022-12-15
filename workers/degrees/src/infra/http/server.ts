@@ -18,11 +18,15 @@ import {
   patchDegree,
   PatchDegreeController,
 } from "@adapters/degrees/patch-degree-controller";
+import { KafkaHandlerController } from "@adapters/faculties/kafka-handler-controller";
 import { ArchiveDegree } from "@application/use-cases/degrees/archive-degree";
+import { ArchiveDegreesByFacultyId } from "@application/use-cases/degrees/archive-degrees-by-facultyId";
 import { CreateDegree } from "@application/use-cases/degrees/create-degree";
 import { GetDegree } from "@application/use-cases/degrees/get-degree";
 import { GetDegrees } from "@application/use-cases/degrees/get-degrees";
 import { PatchDegree } from "@application/use-cases/degrees/patch-degree";
+import { ArchiveFaculty } from "@application/use-cases/faculties/archive-faculty";
+import { CreateFaculty } from "@application/use-cases/faculties/create-faculty";
 import { DegreesPostgres } from "@infra/db/postgres/degrees-postgres";
 import { FacultiesPostgres } from "@infra/db/postgres/faculties-postgres";
 import { Hono } from "hono";
@@ -145,6 +149,22 @@ server.delete("/degrees/:id", async function (c) {
 
   const controller = new ArchiveDegreeController(
     new ArchiveDegree(
+      new DegreesPostgres(env.DATABASE_ENDPOINT),
+      new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
+    )
+  );
+
+  const response = await controller.handle(req);
+  return response;
+});
+
+server.post("/faculties", async function (c) {
+  const { env, req } = c;
+
+  const controller = new KafkaHandlerController(
+    new CreateFaculty(new FacultiesPostgres(env.DATABASE_ENDPOINT)),
+    new ArchiveFaculty(new FacultiesPostgres(env.DATABASE_ENDPOINT)),
+    new ArchiveDegreesByFacultyId(
       new DegreesPostgres(env.DATABASE_ENDPOINT),
       new KafkaPublisher(env.KAFKA_PROXY_ENDPOINT)
     )
