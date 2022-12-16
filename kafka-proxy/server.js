@@ -38,6 +38,10 @@ app.post('/topics', async (req, res) => {
   }
 });
 
+app.get('/health', (_, res) => {
+  res.status(200).send('OK')
+});
+
 class KafkaHandler {
   constructor(kafka) {
     this.kafka = kafka;
