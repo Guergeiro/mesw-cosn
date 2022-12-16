@@ -128,29 +128,31 @@ services:
       - ./workers/courses/src:/usr/src/app/workers/courses/src
     ports:
       - "60003:8787"
-  # zookeeper:
-  #   image: wurstmeister/zookeeper:latest
-  #   ports:
-  #     - "2181:2181"
-  # kafka:
-  #   image: wurstmeister/kafka:2.11-1.1.1
-  #   ports:
-  #     - "9092:9092"
-  #   depends_on:
-  #     - zookeeper
-  #   environment:
-  #     KAFKA_ADVERTISED_HOST_NAME: 192.168.1.69
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #     KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-  #     KAFKA_DELETE_TOPIC_ENABLE: "true"
-  #     KAFKA_CREATE_TOPICS: "course:1:1,faculty:1:1;degree:1:1,user:1:1"
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka:2.11-1.1.1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.1.69
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_CREATE_TOPICS: "course:1:1,faculty:1:1;degree:1:1,user:1:1"
   kafka_proxy:
     build:
       context: ./kafka-proxy
       dockerfile: Dockerfile
     container_name: mesw-cosn-kafka_proxy
+    depends_on:
+      - kafka
     environment:
-      KAFKA_URL: 107.23.7.83:9092
+      KAFKA_URL: kafka:9092
       DEGREES_URL: degrees:8787
       COURSES_URL: courses:8787
     volumes:
