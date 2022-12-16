@@ -9,5 +9,5 @@ name = "cosn-degrees"
 [env.production.vars]
 ENV = "production"
 DATABASE_ENDPOINT = "https://dbrest-production-822a.up.railway.app"
-KAFKA_PROXY_ENDPOINT = "http://kafka_proxy:4000"
+KAFKA_PROXY_ENDPOINT = "https://kafka-proxy-production.up.railway.app"
 RELEASE = "degrees"
