@@ -4,7 +4,7 @@ import { JsonEntity, PersistentEntity } from "shared-entities";
 export type DegreeFilters = {
   -readonly [K in keyof Partial<
     Pick<Degree, "facultyId" | "status" | "eqfLevel">
-  >]: string;
+  >]: string | number;
 };
 
 export type DegreeProps = {

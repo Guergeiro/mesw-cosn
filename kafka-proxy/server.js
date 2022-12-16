@@ -38,6 +38,10 @@ app.post('/topics', async (req, res) => {
   }
 });
 
+app.get('/health', (_, res) => {
+  res.status(200).send('OK')
+});
+
 class KafkaHandler {
   constructor(kafka) {
     this.kafka = kafka;
@@ -52,35 +56,39 @@ class KafkaHandler {
     await consumer.run({
       eachMessage: async ({ partition, topic, message }) => {
 
-        const body = {
-          id: message.value.toString(),
-          operation: message.key.toString(),
-        }
-
         if(topic === 'faculty') {
-          await fetch(`http://${process.env.DEGREES_URL}/${topic}s`, {
+
+          const parsed = JSON.parse(message.value);
+          const key = Object.keys(parsed)[0];
+
+          await fetch(`http://${process.env.DEGREES_URL}/faculties`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify({
+              id: parsed[key],
+              operation: key
+            }),
           });
         }
 
         if(topic === 'degree') {
-          await fetch(`http://${process.env.COURSES_URL}/${topic}s`, {
+          await fetch(`http://${process.env.COURSES_URL}/degrees`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify({
+              id: message.value.toString(),
+              operation: message.key.toString(),
+            }),
           });
         }
 
         console.log({
           partition,
           topic,
-          key: message.key.toString(),
           value: message.value.toString(),
         })
       },
