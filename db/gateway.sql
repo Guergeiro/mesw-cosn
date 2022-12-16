@@ -25,9 +25,12 @@ values
 
 insert into hosts (pathname, hostname, protected)
 values
-('faculty', 'https://orlandopt.pythonanywhere.com', true),
-('article', 'https://orlandopt.pythonanywhere.com', true),
+('faculty', 'https://faculty.orlandomacedo.com', true),
+('faculties', 'https://faculty.orlandomacedo.com', true),
+('article', 'https://faculty.orlandomacedo.com', true),
+('articles', 'https://faculty.orlandomacedo.com', true),
 ('tuition-fee', 'https://hugofpaiva.pythonanywhere.com', true),
 ('tuition-fees', 'https://hugofpaiva.pythonanywhere.com', true),
 ('classroom', 'https://orlandop.pythonanywhere.com', true),
-('classrooms', 'https://orlandop.pythonanywhere.com', true);
+('classrooms', 'https://orlandop.pythonanywhere.com', true),
+('certificate', 'https://faculty.orlandomacedo.com', true);

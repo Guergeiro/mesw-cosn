@@ -90,11 +90,14 @@ export class AuthorizeRequest
       case "assignment":
       case "course":
       case "article":
+      case "articles":
       case "classrooms":
       case "classroom":
         return true;
 
+      case "certificate":
       case "faculty":
+      case "faculties":
       case "tuition-fee":
       case "tuition-fees":
         return false;
@@ -120,8 +123,11 @@ export class AuthorizeRequest
       case "professor":
       case "assignment":
       case "course":
+      case "certificate":
       case "faculty":
+      case "faculties":
       case "article":
+      case "articles":
       case "classroom":
       case "classrooms":
       case "tuition-fee":
