@@ -18,7 +18,6 @@ services:
     container_name: mesw-cosn-gateway_db_rest
     environment:
       PGRST_DB_URI: postgres://app_user:password@gateway_db:5432/app_db
-      # PGRST_DB_ANON_ROLE: postgres
       PGRST_DB_ANON_ROLE: app_user
   gateway:
     build:
@@ -49,7 +48,6 @@ services:
     container_name: mesw-cosn-users_db_rest
     environment:
       PGRST_DB_URI: postgres://app_user:password@users_db:5432/app_db
-      # PGRST_DB_ANON_ROLE: postgres
       PGRST_DB_ANON_ROLE: app_user
   users:
     build:
@@ -60,8 +58,6 @@ services:
     container_name: mesw-cosn-users
     volumes:
       - ./workers/users/src:/usr/src/app/workers/users/src
-    ports:
-      - "60001:8787"
   degrees_db:
     build:
       context: ./db
@@ -77,12 +73,9 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile.db_rest
-      args:
-        PORT: 4000
     container_name: mesw-cosn-degrees_db_rest
     environment:
       PGRST_DB_URI: postgres://app_user:password@degrees_db:5432/app_db
-      # PGRST_DB_ANON_ROLE: postgres
       PGRST_DB_ANON_ROLE: app_user
   degrees:
     build:
@@ -93,8 +86,6 @@ services:
     container_name: mesw-cosn-degrees
     volumes:
       - ./workers/degrees/src:/usr/src/app/workers/degrees/src
-    ports:
-      - "60002:8787"
   courses_db:
     build:
       context: ./db
@@ -110,12 +101,9 @@ services:
     build:
       context: ./db
       dockerfile: Dockerfile.db_rest
-      args:
-        PORT: 4000
     container_name: mesw-cosn-courses_db_rest
     environment:
       PGRST_DB_URI: postgres://app_user:password@courses_db:5432/app_db
-      # PGRST_DB_ANON_ROLE: postgres
       PGRST_DB_ANON_ROLE: app_user
   courses:
     build:
@@ -126,16 +114,12 @@ services:
     container_name: mesw-cosn-courses
     volumes:
       - ./workers/courses/src:/usr/src/app/workers/courses/src
-    ports:
-      - "60003:8787"
   zookeeper:
     image: wurstmeister/zookeeper:latest
-    ports:
-      - "2181:2181"
+    container_name: mesw-cosn-zookeeper
   kafka:
     image: wurstmeister/kafka:2.11-1.1.1
-    ports:
-      - "9092:9092"
+    container_name: mesw-cosn-kafka
     depends_on:
       - zookeeper
     environment:
@@ -153,9 +137,7 @@ services:
       - kafka
     environment:
       KAFKA_URL: kafka:9092
-      DEGREES_URL: degrees:8787
-      COURSES_URL: courses:8787
+      DEGREES_URL: http://degrees:8787
+      COURSES_URL: http://courses:8787
     volumes:
       - ./kafka-proxy:/usr/src/app/kafka-proxy
-    ports:
-      - "60007:4000"

@@ -58,7 +58,7 @@ class KafkaHandler {
           const parsed = JSON.parse(message.value);
           const key = Object.keys(parsed)[0];
 
-          await fetch(`http://${process.env.DEGREES_URL}/faculties`, {
+          await fetch(`${process.env.DEGREES_URL}/faculties`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -71,7 +71,7 @@ class KafkaHandler {
         }
 
         if (topic === "degree") {
-          await fetch(`http://${process.env.COURSES_URL}/degrees`, {
+          await fetch(`${process.env.COURSES_URL}/degrees`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
